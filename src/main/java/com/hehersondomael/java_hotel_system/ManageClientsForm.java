@@ -62,6 +62,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jButtonEditClient = new javax.swing.JButton();
         jButtonRemoveClient = new javax.swing.JButton();
         jButtonClearFields = new javax.swing.JButton();
+        jButton_Refresh_JTable_Data = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,7 +81,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(420, 420, 420)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(398, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,6 +131,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Email:");
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -153,7 +155,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButtonAddClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jButtonAddClient.setText("Add to Client");
+        jButtonAddClient.setText("Add New Client");
         jButtonAddClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jButtonAddClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonAddClient.addActionListener(new java.awt.event.ActionListener() {
@@ -166,16 +168,40 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jButtonEditClient.setText("Edit");
         jButtonEditClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jButtonEditClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonEditClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditClientActionPerformed(evt);
+            }
+        });
 
         jButtonRemoveClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jButtonRemoveClient.setText("Remove");
         jButtonRemoveClient.setActionCommand("Delete");
         jButtonRemoveClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jButtonRemoveClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonRemoveClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveClientActionPerformed(evt);
+            }
+        });
 
         jButtonClearFields.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jButtonClearFields.setText("Clear Fields");
         jButtonClearFields.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonClearFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearFieldsActionPerformed(evt);
+            }
+        });
+
+        jButton_Refresh_JTable_Data.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton_Refresh_JTable_Data.setText("Refresh Data");
+        jButton_Refresh_JTable_Data.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Refresh_JTable_Data.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_Refresh_JTable_DataActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,25 +234,27 @@ public class ManageClientsForm extends javax.swing.JFrame {
                             .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
+                    .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -250,14 +278,13 @@ public class ManageClientsForm extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,6 +357,78 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jTextFieldEmail.setText(model.getValueAt(rIndex,4).toString());
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void jButtonEditClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditClientActionPerformed
+        // edit the selected client
+        
+        // get data from the field
+        int id = 0;
+        String fname = jTextFieldFirstName.getText();
+        String lname = jTextFieldLastName.getText();
+        String phone = jTextFieldContactNo.getText();
+        String email = jTextFieldEmail.getText();
+        
+        if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
+        {
+            JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
+        }
+        else
+        { 
+            try {
+                    id = Integer.valueOf(jTextFieldID.getText());
+
+                    if (client.editClient(id,fname,lname,phone,email))
+                    {
+                        JOptionPane.showMessageDialog(rootPane, "Client Data Updated Successfully", "Edit Client", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(rootPane, "Client Data Not Updated", "Edited Client Error", JOptionPane.ERROR_MESSAGE);
+                    }
+               }
+            catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+
+        }
+    }//GEN-LAST:event_jButtonEditClientActionPerformed
+
+    private void jButtonRemoveClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveClientActionPerformed
+        // delete the selected client
+        try {
+                    int id = Integer.valueOf(jTextFieldID.getText());
+
+                    if (client.removeClient(id))
+                    {
+                        JOptionPane.showMessageDialog(rootPane, "Client Data Deleted Successfully", "Remove Client", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(rootPane, "Client Data Not Deleted", "Remove Client Error", JOptionPane.ERROR_MESSAGE);
+                    }
+               }
+            catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
+            }
+    }//GEN-LAST:event_jButtonRemoveClientActionPerformed
+
+    private void jButtonClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldsActionPerformed
+        // remove text fields from all jTextFields
+        jTextFieldID.setText("");
+        jTextFieldFirstName.setText("");
+        jTextFieldLastName.setText("");
+        jTextFieldContactNo.setText("");
+        jTextFieldEmail.setText("");
+    }//GEN-LAST:event_jButtonClearFieldsActionPerformed
+
+    private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
+        // clear the jTable first
+        jTable1.setModel(new DefaultTableModel(null, new Object[]{"ID","First Name","Last Name","Contact No.","Email"}));
+
+        // populate the jTable
+        client.fillClientTable(jTable1);
+    }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -370,6 +469,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
     private javax.swing.JButton jButtonClearFields;
     private javax.swing.JButton jButtonEditClient;
     private javax.swing.JButton jButtonRemoveClient;
+    private javax.swing.JButton jButton_Refresh_JTable_Data;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

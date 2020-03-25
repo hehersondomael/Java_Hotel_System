@@ -52,6 +52,37 @@ public class ROOMS {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+        
+// create a function to display all rooms in jTable
+        public void fillRoomsJTable(JTable table)
+    { 
+        PreparedStatement ps;
+        ResultSet rs;
+        String selectQuery = "SELECT * FROM `rooms`";
+        
+        try {
+            ps = my_connection.createConnection().prepareStatement(selectQuery);
+            
+            rs = ps.executeQuery();
+            
+            DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
+
+            Object[] row;
+            
+            while(rs.next())
+            {
+                row = new Object[4];
+                row[0] = rs.getInt(1);
+                row[1] = rs.getInt(2);
+                row[2] = rs.getString(3);
+                row[3] = rs.getString(4);
+
+                tableModel.addRow(row);
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }        
     
     // create a function to fill a combobox with the rooms-type id
     public void fillRooms_TYPE_JCombobox(JComboBox comboBox)
@@ -74,4 +105,68 @@ public class ROOMS {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    // create a function to add a new room
+        public boolean addRoom(int number, int type, String phone)
+        {
+        PreparedStatement st;
+        String addQuery = "INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`) VALUES (?,?,?,?)";
+        try {
+           st = my_connection.createConnection().prepareStatement(addQuery);
+           
+           st.setInt(1, number);
+           st.setInt(2, type);
+           st.setString(3, phone);
+           // when we add a new room, the reserved column will be set to no
+           // the reserved column means whether the selected room is free or not
+           st.setString(4, "No");
+           
+           return (st.executeUpdate() > 0);
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    // create a function to edit the selected room
+    public boolean editRoom(int number, int type, String phone, String isReserved)
+    {
+        PreparedStatement st;
+        String editQuery = "UPDATE `rooms` SET `type`=?, `phone`=?, `reserved`=? WHERE `r_number`=?";
+        
+        try {
+           st = my_connection.createConnection().prepareStatement(editQuery);
+           
+           st.setInt(1, type);
+           st.setString(2, phone);
+           st.setString(3, isReserved);
+           st.setInt(4, number);
+           
+           return (st.executeUpdate() > 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }        
+    
+public boolean removeRoom(int roomNumber)
+    {
+                PreparedStatement st;
+        String deleteQuery = "DELETE FROM `rooms` WHERE `r_number`=?";
+        
+        try {
+           st = my_connection.createConnection().prepareStatement(deleteQuery);
+           
+           st.setInt(1, roomNumber);
+           
+           return (st.executeUpdate() > 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+    }    
 }

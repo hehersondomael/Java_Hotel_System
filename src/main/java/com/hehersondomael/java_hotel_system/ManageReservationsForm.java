@@ -5,17 +5,29 @@
  */
 package com.hehersondomael.java_hotel_system;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Heherson Domael
  */
 public class ManageReservationsForm extends javax.swing.JFrame {
 
+    RESERVATION reservation = new RESERVATION();
     /**
      * Creates new form ManageReservationsForm
      */
     public ManageReservationsForm() {
         initComponents();
+        
+        reservation.fillReservationsJTable(jTable1);
+        jTable1.setRowHeight(25);
     }
 
     /**
@@ -32,25 +44,24 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldID = new javax.swing.JTextField();
+        jTextFieldReservationID = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldFirstName = new javax.swing.JTextField();
-        jTextFieldLastName = new javax.swing.JTextField();
+        jTextFieldClientID = new javax.swing.JTextField();
+        jTextFieldRoomNo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldContactNo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldEmail = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButtonAddClient = new javax.swing.JButton();
-        jButtonEditClient = new javax.swing.JButton();
-        jButtonRemoveClient = new javax.swing.JButton();
+        jButtonAddReservation = new javax.swing.JButton();
+        jButtonEditReservation = new javax.swing.JButton();
+        jButtonRemoveReservation = new javax.swing.JButton();
         jButtonClearFields = new javax.swing.JButton();
         jButton_Refresh_JTable_Data = new javax.swing.JButton();
+        jDateChooserDateIn = new com.toedter.calendar.JDateChooser();
+        jDateChooserDateOut = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1121, 477));
 
         jPanel1.setBackground(new java.awt.Color(204, 102, 0));
 
@@ -81,41 +92,37 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID:");
 
-        jTextFieldID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldReservationID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("First Name:");
+        jLabel3.setText("Client ID:");
 
-        jTextFieldFirstName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextFieldFirstName.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldClientID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldClientID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldFirstNameActionPerformed(evt);
+                jTextFieldClientIDActionPerformed(evt);
             }
         });
 
-        jTextFieldLastName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextFieldLastName.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldRoomNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldLastNameActionPerformed(evt);
+                jTextFieldRoomNoActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Last Name:");
-
-        jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Room No.:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Contact No.:");
-
-        jTextFieldEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Date In:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Email:");
+        jLabel6.setText("Date Out:");
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -123,7 +130,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name", "Contact No.", "Email"
+                "Reservation ID", "Client ID", "Room Number", "Date In", "Date Out"
             }
         )
         // make the jTable cells not editable
@@ -140,34 +147,34 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButtonAddClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jButtonAddClient.setText("Add New Client");
-        jButtonAddClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButtonAddClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonAddClient.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddReservation.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jButtonAddReservation.setText("Add New Reservation");
+        jButtonAddReservation.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonAddReservation.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonAddReservation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddClientActionPerformed(evt);
+                jButtonAddReservationActionPerformed(evt);
             }
         });
 
-        jButtonEditClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jButtonEditClient.setText("Edit");
-        jButtonEditClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButtonEditClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonEditClient.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEditReservation.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jButtonEditReservation.setText("Edit");
+        jButtonEditReservation.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonEditReservation.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonEditReservation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditClientActionPerformed(evt);
+                jButtonEditReservationActionPerformed(evt);
             }
         });
 
-        jButtonRemoveClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jButtonRemoveClient.setText("Remove");
-        jButtonRemoveClient.setActionCommand("Delete");
-        jButtonRemoveClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButtonRemoveClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonRemoveClient.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRemoveReservation.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jButtonRemoveReservation.setText("Remove");
+        jButtonRemoveReservation.setActionCommand("Delete");
+        jButtonRemoveReservation.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonRemoveReservation.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonRemoveReservation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveClientActionPerformed(evt);
+                jButtonRemoveReservationActionPerformed(evt);
             }
         });
 
@@ -189,6 +196,10 @@ public class ManageReservationsForm extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserDateIn.setDateFormatString("MMM dd yyyy");
+
+        jDateChooserDateOut.setDateFormatString("MMM dd yyyy");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -201,33 +212,32 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(98, 98, 98)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldID, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addComponent(jTextFieldFirstName)
-                            .addComponent(jTextFieldLastName)))
+                            .addComponent(jTextFieldReservationID, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jTextFieldClientID)
+                            .addComponent(jTextFieldRoomNo)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(46, 46, 46)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButtonAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(jButtonEditReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonRemoveReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButtonClearFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooserDateIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooserDateOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
@@ -241,36 +251,40 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                 .addGap(66, 66, 66)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldReservationID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldClientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldRoomNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                            .addComponent(jDateChooserDateIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooserDateOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41))
+                            .addComponent(jButtonAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonRemoveReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonEditReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -287,13 +301,13 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameActionPerformed
+    private void jTextFieldClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClientIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldFirstNameActionPerformed
+    }//GEN-LAST:event_jTextFieldClientIDActionPerformed
 
-    private void jTextFieldLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLastNameActionPerformed
+    private void jTextFieldRoomNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldRoomNoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldLastNameActionPerformed
+    }//GEN-LAST:event_jTextFieldRoomNoActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // display the selected row data in the jTextFields
@@ -303,115 +317,104 @@ public class ManageReservationsForm extends javax.swing.JFrame {
 
         // get the selected row index
         int rIndex = jTable1.getSelectedRow();
-
+        
         // display data
-        jTextFieldID.setText(model.getValueAt(rIndex,0).toString());
-        jTextFieldFirstName.setText(model.getValueAt(rIndex,1).toString());
-        jTextFieldLastName.setText(model.getValueAt(rIndex,2).toString());
-        jTextFieldContactNo.setText(model.getValueAt(rIndex,3).toString());
-        jTextFieldEmail.setText(model.getValueAt(rIndex,4).toString());
+        jTextFieldReservationID.setText(model.getValueAt(rIndex,0).toString());
+        jTextFieldClientID.setText(model.getValueAt(rIndex,1).toString());
+        jTextFieldRoomNo.setText(model.getValueAt(rIndex,2).toString());
+        
+        try {
+            // display the dateIn and dateOut from jTable and jDateChooser
+            Date dateIn = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rIndex,3).toString());
+            jDateChooserDateIn.setDate(dateIn);
+
+            Date dateOut = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rIndex,4).toString());
+            jDateChooserDateOut.setDate(dateOut);
+        } catch (ParseException ex) {
+            Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jButtonAddClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddClientActionPerformed
-        // add a new client
-
-        // get data from the fields
-
-        String fname = jTextFieldFirstName.getText();
-        String lname = jTextFieldLastName.getText();
-        String phone = jTextFieldContactNo.getText();
-        String email = jTextFieldEmail.getText();
-
-        if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
-        {
-            JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
-        }
-        else
-        {
-            try {
-                if (client.addClient(fname,lname,phone,email))
-                {
-                    JOptionPane.showMessageDialog(rootPane, "New Client Added Successfully", "Add Client", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(rootPane, "Client Not Added", "Add Client Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ManageClientsForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jButtonAddClientActionPerformed
-
-    private void jButtonEditClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditClientActionPerformed
-        // edit the selected client
-
-        // get data from the field
-        int id = 0;
-        String fname = jTextFieldFirstName.getText();
-        String lname = jTextFieldLastName.getText();
-        String phone = jTextFieldContactNo.getText();
-        String email = jTextFieldEmail.getText();
-
-        if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
-        {
-            JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
-        }
-        else
-        {
-            try {
-                id = Integer.valueOf(jTextFieldID.getText());
-
-                if (client.editClient(id,fname,lname,phone,email))
-                {
-                    JOptionPane.showMessageDialog(rootPane, "Client Data Updated Successfully", "Edit Client", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(rootPane, "Client Data Not Updated", "Edited Client Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        }
-    }//GEN-LAST:event_jButtonEditClientActionPerformed
-
-    private void jButtonRemoveClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveClientActionPerformed
-        // delete the selected client
+    private void jButtonAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddReservationActionPerformed
         try {
-            int id = Integer.valueOf(jTextFieldID.getText());
-
-            if (client.removeClient(id))
-            {
-                JOptionPane.showMessageDialog(rootPane, "Client Data Deleted Successfully", "Remove Client", JOptionPane.INFORMATION_MESSAGE);
-            }
+            int client_id = Integer.valueOf(jTextFieldClientID.getText());
+            int room_number = Integer.valueOf(jTextFieldRoomNo.getText());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date_in = dateFormat.format(jDateChooserDateIn.getDate());
+            String date_out = dateFormat.format(jDateChooserDateOut.getDate());
+            
+            if (reservation.addReservation(client_id, room_number, date_in, date_out))
+                JOptionPane.showMessageDialog(rootPane, "New Reservation Added Successfully", "Add Reservation", JOptionPane.INFORMATION_MESSAGE);
             else
-            {
-                JOptionPane.showMessageDialog(rootPane, "Client Data Not Deleted", "Remove Client Error", JOptionPane.ERROR_MESSAGE);
-            }
+                JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);
         }
         catch(NumberFormatException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButtonRemoveClientActionPerformed
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number + Client ID", "Input Fields Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        
+    }//GEN-LAST:event_jButtonAddReservationActionPerformed
+
+    private void jButtonEditReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditReservationActionPerformed
+        // edit the selected reservation
+        // get data from the field
+      
+            try {
+                    int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
+                    int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
+                    int clientID = Integer.valueOf(jTextFieldClientID.getText());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String date_in = dateFormat.format(jDateChooserDateIn.getDate());
+                    String date_out = dateFormat.format(jDateChooserDateOut.getDate());
+
+                    if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
+                        JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
+               }
+            catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number + Client ID + Reservation ID", "Data Number Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(NullPointerException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Selecte the Date In and Date Out", "Date Error", JOptionPane.ERROR_MESSAGE);
+            }
+    }//GEN-LAST:event_jButtonEditReservationActionPerformed
+
+    private void jButtonRemoveReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveReservationActionPerformed
+        // delete the selected room
+        try {
+                    int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
+
+                    if (reservation.removeReservation(reservationID))
+                        JOptionPane.showMessageDialog(rootPane, "Reservation Deleted Successfully", "Remove Reservation", JOptionPane.INFORMATION_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(rootPane, "Reservation Not Deleted", "Remove Reservation Error", JOptionPane.ERROR_MESSAGE);
+               }
+            catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Reservation ID", "Reservation ID Error", JOptionPane.ERROR_MESSAGE);
+            }        
+    }//GEN-LAST:event_jButtonRemoveReservationActionPerformed
 
     private void jButtonClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldsActionPerformed
         // remove text fields from all jTextFields
-        jTextFieldID.setText("");
-        jTextFieldFirstName.setText("");
-        jTextFieldLastName.setText("");
-        jTextFieldContactNo.setText("");
-        jTextFieldEmail.setText("");
+        jTextFieldClientID.setText("");
+        jTextFieldReservationID.setText("");
+        jTextFieldRoomNo.setText("");
+
+        // remove date from jDateChooser
+        jDateChooserDateIn.setDate(null);
+        jDateChooserDateOut.setDate(null);
+        
+        // if you want to set the date to the current date
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
         // clear the jTable first
-        jTable1.setModel(new DefaultTableModel(null, new Object[]{"ID","First Name","Last Name","Contact No.","Email"}));
+        jTable1.setModel(new DefaultTableModel(null, new Object[]{"Reservation ID","Client ID","Room Number","Date In","Date Out"}));
 
         // populate the jTable
-        client.fillClientTable(jTable1);
+        reservation.fillReservationsJTable(jTable1);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
 
     /**
@@ -450,11 +453,13 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddClient;
+    private javax.swing.JButton jButtonAddReservation;
     private javax.swing.JButton jButtonClearFields;
-    private javax.swing.JButton jButtonEditClient;
-    private javax.swing.JButton jButtonRemoveClient;
+    private javax.swing.JButton jButtonEditReservation;
+    private javax.swing.JButton jButtonRemoveReservation;
     private javax.swing.JButton jButton_Refresh_JTable_Data;
+    private com.toedter.calendar.JDateChooser jDateChooserDateIn;
+    private com.toedter.calendar.JDateChooser jDateChooserDateOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -465,10 +470,8 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldContactNo;
-    private javax.swing.JTextField jTextFieldEmail;
-    private javax.swing.JTextField jTextFieldFirstName;
-    private javax.swing.JTextField jTextFieldID;
-    private javax.swing.JTextField jTextFieldLastName;
+    private javax.swing.JTextField jTextFieldClientID;
+    private javax.swing.JTextField jTextFieldReservationID;
+    private javax.swing.JTextField jTextFieldRoomNo;
     // End of variables declaration//GEN-END:variables
 }

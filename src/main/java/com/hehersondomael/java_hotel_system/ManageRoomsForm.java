@@ -405,9 +405,7 @@ public class ManageRoomsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddRoomActionPerformed
 
     private void jButtonEditRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditRoomActionPerformed
-
-                // edit the selected client
-        
+        // edit the selected client
         // get data from the field
         int roomNumber = 0;
         int type = Integer.valueOf(jComboBoxType.getSelectedItem().toString());

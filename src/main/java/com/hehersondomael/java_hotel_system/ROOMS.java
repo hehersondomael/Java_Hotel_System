@@ -54,8 +54,13 @@ public class ROOMS {
     }
         
 // create a function to display all rooms in jTable
+
+    /**
+     *
+     * @param table
+     */
         public void fillRoomsJTable(JTable table)
-    { 
+        { 
         PreparedStatement ps;
         ResultSet rs;
         String selectQuery = "SELECT * FROM `rooms`";
@@ -168,5 +173,25 @@ public boolean removeRoom(int roomNumber)
             return false;
         }
         
-    }    
+    }
+
+    // create a function to set a room to reserved or not
+    public boolean setRoomToReserve(int number, String isReserved)
+    {
+        PreparedStatement st;
+        String editQuery = "UPDATE `rooms` SET `reserved`=? WHERE `r_number`=?";
+        
+        try {
+           st = my_connection.createConnection().prepareStatement(editQuery);
+
+           st.setString(1, isReserved);
+           st.setInt(2, number);
+
+           return (st.executeUpdate() > 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 }

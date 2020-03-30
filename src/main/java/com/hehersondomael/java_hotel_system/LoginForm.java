@@ -78,6 +78,7 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel2.setText("Username:");
 
         jTextFieldUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextFieldUsername.setText("testuser");
         jTextFieldUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldUsernameActionPerformed(evt);
@@ -99,6 +100,7 @@ public class LoginForm extends javax.swing.JFrame {
         });
 
         jPasswordField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPasswordField1.setText("pass");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);

@@ -20,23 +20,23 @@ import javax.swing.table.DefaultTableModel;
 public class CLIENT { // the client class
     
     MY_CONNECTION my_connection = new MY_CONNECTION();
-    
+
     // create a function to add a client
     public boolean addClient(String fname, String lname, String phone, String email) throws SQLException
     {
         PreparedStatement st;
         String addQuery = "INSERT INTO `clients`(`first_name`, `last_name`, `phone`, `email`) VALUES (?, ?, ?, ?)";
-        
+
         try {
            st = my_connection.createConnection().prepareStatement(addQuery);
-           
+
            st.setString(1, fname);
            st.setString(2, lname);
            st.setString(3, phone);
            st.setString(4, email);
-           
+
            return (st.executeUpdate() > 0);
-           
+
         } catch (SQLException ex) {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -93,17 +93,17 @@ public class CLIENT { // the client class
     {
         PreparedStatement ps;
         ResultSet rs;
-        String selectQuery = "SELECT * FROM `clients`";
-        
+        String selectQuery = "SELECT * FROM `clients` ORDER BY `id` DESC";
+
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
-            
+
             rs = ps.executeQuery();
-            
+
             DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
-            
+
             Object[] row;
-            
+
             while(rs.next())
             {
                 row = new Object[5];
@@ -112,10 +112,9 @@ public class CLIENT { // the client class
                 row[2] = rs.getString(3);
                 row[3] = rs.getString(4);
                 row[4] = rs.getString(5);
-                
+
                 tableModel.addRow(row);
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
         }

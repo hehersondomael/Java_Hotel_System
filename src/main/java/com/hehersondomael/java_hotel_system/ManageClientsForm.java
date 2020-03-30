@@ -5,10 +5,14 @@
  */
 package com.hehersondomael.java_hotel_system;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,16 +26,33 @@ public class ManageClientsForm extends javax.swing.JFrame {
      */
     
     CLIENT client = new CLIENT();
-    
+
     public ManageClientsForm() {
         initComponents();
         
         // add a white border to clear fields button
         // Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.white);
         // jButtonClearFields.setBorder(border);
-        
         // populate the jtable
         client.fillClientTable(jTable1);
+        jButtonEditClient.setEnabled(false);
+        jButtonRemoveClient.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
+
+       this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                String ObjButtons[] = {"Yes", "No"};
+                int x = JOptionPane.showConfirmDialog(null, "Exit?",
+                        "Close", JOptionPane.YES_NO_OPTION);
+                if (x==JOptionPane.YES_OPTION)
+                    e.getWindow().dispose();
+                else
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });         
     }
 
     /**
@@ -95,6 +116,8 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID:");
 
+        jTextFieldID.setEditable(false);
+        jTextFieldID.setBackground(new java.awt.Color(204, 204, 204));
         jTextFieldID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -107,11 +130,27 @@ public class ManageClientsForm extends javax.swing.JFrame {
                 jTextFieldFirstNameActionPerformed(evt);
             }
         });
+        jTextFieldFirstName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyTyped(evt);
+            }
+        });
 
         jTextFieldLastName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextFieldLastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldLastNameActionPerformed(evt);
+            }
+        });
+        jTextFieldLastName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyTyped(evt);
             }
         });
 
@@ -120,17 +159,34 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel4.setText("Last Name:");
 
         jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldContactNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Contact No.:");
 
         jTextFieldEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Email:");
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,12 +197,21 @@ public class ManageClientsForm extends javax.swing.JFrame {
             }
         )
         // make the jTable cells not editable
-        {public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }}
-        );
+        {
+            Class[] types = { Integer.class, String.class, String.class, String.class, String.class};
+            boolean[] canEdit = { true, true, true, true, true};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return this.types[columnIndex];
+            }
+
+            public boolean isCellEditable(int columnIndex) {
+                return this.canEdit[columnIndex];
+            }
+        });
         jTable1.setGridColor(new java.awt.Color(255, 255, 0));
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -165,7 +230,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         });
 
         jButtonEditClient.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jButtonEditClient.setText("Edit");
+        jButtonEditClient.setText("Modify");
         jButtonEditClient.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jButtonEditClient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonEditClient.addActionListener(new java.awt.event.ActionListener() {
@@ -224,28 +289,28 @@ public class ManageClientsForm extends javax.swing.JFrame {
                             .addComponent(jTextFieldID, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                             .addComponent(jTextFieldFirstName)
                             .addComponent(jTextFieldLastName)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButtonClearFields, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButtonAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonEditClient, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonRemoveClient, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButtonClearFields, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
-                    .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton_Refresh_JTable_Data, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
@@ -314,11 +379,11 @@ public class ManageClientsForm extends javax.swing.JFrame {
         
         // get data from the fields
 
-        String fname = jTextFieldFirstName.getText();
-        String lname = jTextFieldLastName.getText();
-        String phone = jTextFieldContactNo.getText();
-        String email = jTextFieldEmail.getText();
-        
+        String fname = jTextFieldFirstName.getText().trim();
+        String lname = jTextFieldLastName.getText().trim();
+        String phone = jTextFieldContactNo.getText().trim();
+        String email = jTextFieldEmail.getText().trim();
+
         if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
         {
             JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
@@ -329,11 +394,19 @@ public class ManageClientsForm extends javax.swing.JFrame {
                 if (client.addClient(fname,lname,phone,email))
                 {
                     JOptionPane.showMessageDialog(rootPane, "New Client Added Successfully", "Add Client", JOptionPane.INFORMATION_MESSAGE);
+
+                    jTextFieldID.setText("");
+                    jTextFieldFirstName.setText("");
+                    jTextFieldLastName.setText("");
+                    jTextFieldContactNo.setText("");
+                    jTextFieldEmail.setText("");
+
+                    jButtonAddClient.setEnabled(true);
+                    jButtonEditClient.setEnabled(false);
+                    jButtonRemoveClient.setEnabled(false);
                 }
                 else
-                {
                     JOptionPane.showMessageDialog(rootPane, "Client Not Added", "Add Client Error", JOptionPane.ERROR_MESSAGE);
-                }
             } catch (SQLException ex) {
                 Logger.getLogger(ManageClientsForm.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -341,14 +414,18 @@ public class ManageClientsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddClientActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        jButtonAddClient.setEnabled(false);
+        jButtonEditClient.setEnabled(true);
+        jButtonRemoveClient.setEnabled(true);
+        jButtonClearFields.setEnabled(true);
         // display the selected row data in the jTextFields
-        
+
         // get the jTable model
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
 
         // get the selected row index
-        int rIndex = jTable1.getSelectedRow();
-        
+        int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
+
         // display data
         jTextFieldID.setText(model.getValueAt(rIndex,0).toString());
         jTextFieldFirstName.setText(model.getValueAt(rIndex,1).toString());
@@ -366,11 +443,9 @@ public class ManageClientsForm extends javax.swing.JFrame {
         String lname = jTextFieldLastName.getText();
         String phone = jTextFieldContactNo.getText();
         String email = jTextFieldEmail.getText();
-        
+
         if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
-        {
             JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
-        }
         else
         { 
             try {
@@ -388,8 +463,6 @@ public class ManageClientsForm extends javax.swing.JFrame {
             catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-
         }
     }//GEN-LAST:event_jButtonEditClientActionPerformed
 
@@ -401,11 +474,20 @@ public class ManageClientsForm extends javax.swing.JFrame {
                     if (client.removeClient(id))
                     {
                         JOptionPane.showMessageDialog(rootPane, "Client Data Deleted Successfully", "Remove Client", JOptionPane.INFORMATION_MESSAGE);
+
+                        jTextFieldID.setText("");
+                        jTextFieldFirstName.setText("");
+                        jTextFieldLastName.setText("");
+                        jTextFieldContactNo.setText("");
+                        jTextFieldEmail.setText("");
+
+                        jButtonAddClient.setEnabled(true);
+                        jButtonEditClient.setEnabled(false);
+                        jButtonRemoveClient.setEnabled(false);
+                        jButtonClearFields.setEnabled(false);
                     }
                     else
-                    {
                         JOptionPane.showMessageDialog(rootPane, "Client Data Not Deleted", "Remove Client Error", JOptionPane.ERROR_MESSAGE);
-                    }
                }
             catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
@@ -419,15 +501,62 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jTextFieldLastName.setText("");
         jTextFieldContactNo.setText("");
         jTextFieldEmail.setText("");
+
+        jButtonAddClient.setEnabled(true);
+        jButtonEditClient.setEnabled(false);
+        jButtonRemoveClient.setEnabled(false);
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
+        jTextFieldID.setText("");
+        jTextFieldFirstName.setText("");
+        jTextFieldLastName.setText("");
+        jTextFieldContactNo.setText("");
+        jTextFieldEmail.setText("");
+
+        jButtonAddClient.setEnabled(true);
+        jButtonEditClient.setEnabled(false);
+        jButtonRemoveClient.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
+
         // clear the jTable first
-        jTable1.setModel(new DefaultTableModel(null, new Object[]{"ID","First Name","Last Name","Contact No.","Email"}));
+        jTable1.setModel(new DefaultTableModel(new Object [][] {},
+                new String [] {"ID", "First Name", "Last Name", "Contact No.", "Email" })
+                // make the jTable cells not editable
+                {
+                Class[] types = { Integer.class, String.class, String.class, String.class, String.class};
+                boolean[] canEdit = { true, true, true, true, true};
+
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return this.types[columnIndex];
+                }
+
+                public boolean isCellEditable(int columnIndex) {
+                    return this.canEdit[columnIndex];
+                }
+                });
 
         // populate the jTable
         client.fillClientTable(jTable1);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
+
+    private void jTextFieldFirstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameKeyTyped
+        if (jTextFieldFirstName.getText().trim().equals("") &&
+            jTextFieldLastName.getText().trim().equals("") &&
+            jTextFieldContactNo.getText().trim().equals("") &&
+            jTextFieldEmail.getText().trim().equals(""))
+                jButtonClearFields.setEnabled(false);
+        if (!(jTextFieldFirstName.getText().trim().equals("")) ||
+            !(jTextFieldLastName.getText().trim().equals("")) ||
+            !(jTextFieldContactNo.getText().trim().equals("")) ||
+            !(jTextFieldEmail.getText().trim().equals("")))
+                jButtonClearFields.setEnabled(true);
+    }//GEN-LAST:event_jTextFieldFirstNameKeyTyped
+
+    private void jTextFieldFirstNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameKeyPressed
+
+    }//GEN-LAST:event_jTextFieldFirstNameKeyPressed
 
     /**
      * @param args the command line arguments
@@ -455,13 +584,13 @@ public class ManageClientsForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ManageClientsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ManageClientsForm().setVisible(true);
             }
-        });
+        });               
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -343,17 +343,35 @@ public class ManageReservationsForm extends javax.swing.JFrame {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String date_in = dateFormat.format(jDateChooserDateIn.getDate());
             String date_out = dateFormat.format(jDateChooserDateOut.getDate());
-            
-            if (reservation.addReservation(client_id, room_number, date_in, date_out))
-                JOptionPane.showMessageDialog(rootPane, "New Reservation Added Successfully", "Add Reservation", JOptionPane.INFORMATION_MESSAGE);
+            String toDayDate = dateFormat.format(new Date());
+
+            Date dIn = dateFormat.parse(date_in);
+            Date dOut = dateFormat.parse(date_out);
+            Date tDD = dateFormat.parse(toDayDate);
+
+            // if the date_in is before or not equal to today date
+            if(!(dIn.after(tDD) || dIn.equals(tDD)))
+                JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
+            // if date_out is before date_in or not equal to date_in
+            else if (!(dOut.after(dIn) || dOut.equals(dIn)))
+            {
+                JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
+            }
+            // if everything is ok
             else
-                JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);
+            {
+                if (reservation.addReservation(client_id, room_number, date_in, date_out))
+                    JOptionPane.showMessageDialog(rootPane, "New Reservation Added Successfully", "Add Reservation", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);
+            }            
         }
         catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number + Client ID", "Input Fields Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        
+        catch (ParseException ex) {
+            Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonAddReservationActionPerformed
 
     private void jButtonEditReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditReservationActionPerformed
@@ -367,17 +385,38 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String date_in = dateFormat.format(jDateChooserDateIn.getDate());
                     String date_out = dateFormat.format(jDateChooserDateOut.getDate());
+                    
+                    String toDayDate = dateFormat.format(new Date());
 
-                    if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
-                        JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
-                    else
-                        JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
-               }
+                    Date dIn = dateFormat.parse(date_in);
+                    Date dOut = dateFormat.parse(date_out);
+                    Date tDD = dateFormat.parse(toDayDate);     
+                    
+                    // if the date_in is before or not equal to today date
+            if(!(dIn.after(tDD) || dIn.equals(tDD)))
+                JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
+            // if date_out is before date_in or not equal to date_in
+            else if (!(dOut.after(dIn) || dOut.equals(dIn)))
+            {
+                JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
+            }
+            // if everything is ok
+            else
+            {
+                if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
+                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
+            }
+            }
             catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number + Client ID + Reservation ID", "Data Number Error", JOptionPane.ERROR_MESSAGE);
             }
             catch(NullPointerException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Selecte the Date In and Date Out", "Date Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (ParseException ex) {
+            Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_jButtonEditReservationActionPerformed
 

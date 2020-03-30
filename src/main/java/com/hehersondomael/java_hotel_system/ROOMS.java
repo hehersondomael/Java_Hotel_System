@@ -176,7 +176,7 @@ public boolean removeRoom(int roomNumber)
     }
 
     // create a function to set a room to reserved or not
-    public boolean setRoomToReserve(int number, String isReserved)
+    public boolean setRoomToReserved(int number, String isReserved)
     {
         PreparedStatement st;
         String editQuery = "UPDATE `rooms` SET `reserved`=? WHERE `r_number`=?";
@@ -194,4 +194,29 @@ public boolean removeRoom(int roomNumber)
             return false;
         }
     }
+    
+    // create a function to check if a room is already reserved
+        public String isRoomReserved(int number)
+    {
+        PreparedStatement st;
+        ResultSet rs;
+        String editQuery = "SELECT `reserved` FROM `rooms` WHERE `r_number`=?";
+
+        try {
+           st = my_connection.createConnection().prepareStatement(editQuery);
+
+           st.setInt(1, number); //WHAT DOES THIS MEAN??
+
+           rs = st.executeQuery();
+
+           if(rs.next())
+               return rs.getString(1);
+           else
+               return "";
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+    }   
 }

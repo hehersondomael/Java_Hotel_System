@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,29 +42,34 @@ public class RESERVATION {
         {
         PreparedStatement st;
         String addQuery = "INSERT INTO `reservations`(`client_id`, `room_number`, `date_in`, `date_out`) VALUES (?,?,?,?)";
-        try {
-           st = my_connection.createConnection().prepareStatement(addQuery);
+            try {
+                st = my_connection.createConnection().prepareStatement(addQuery);
 
-           st.setInt(1, client_id);
-           st.setInt(2, room_number);
-           st.setString(3, dateIn);
-           st.setString(4, dateOut);
-           
-           if (st.executeUpdate() > 0)
-           {
-               
-               return st.executeUpdate() > 0;
-           }
-           else
-           {
-               // bookmark: 5:32:19
-               return false;
-           }
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-            }
+                st.setInt(1, client_id);
+                st.setInt(2, room_number);
+                st.setString(3, dateIn);
+                st.setString(4, dateOut);
+                System.out.println(room.isRoomReserved(room_number).equals("No"));
+
+                if(room.isRoomReserved(room_number).equals("No"))
+                {
+                    if (st.executeUpdate() > 0)
+                    {
+                        room.setRoomToReserved(room_number, "Yes");
+                        return true;
+                    }
+                    else
+                        return false;          
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "This Room is Already Reserved", "Room Reserved", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+                } catch (SQLException ex) {
+                    Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
         }    
 
     public boolean editReservation(int reservation_id, int client_id, int room_number, String dateIn, String dateOut)
@@ -91,15 +97,25 @@ public class RESERVATION {
     // create a function to remove the selected reservation
     public boolean removeReservation(int reservation_id)
     {
-                PreparedStatement st;
-        String deleteQuery = "DELETE FROM `reservation` WHERE `r_number`=?";
-        
+        PreparedStatement st;
+        String deleteQuery = "DELETE FROM `reservations` WHERE `id`=?";
+
         try {
            st = my_connection.createConnection().prepareStatement(deleteQuery);
-           
            st.setInt(1, reservation_id);
+
+           // get the room number before deleting the reservation
+           int  room_number = getRoomNumberFromReservation(reservation_id);
            
-           return (st.executeUpdate() > 0);
+           if (st.executeUpdate() > 0)
+           {
+               room.setRoomToReserved(room_number, "No");
+               return true;
+           }
+           else
+           {
+               return false;
+           }
 
         } catch (SQLException ex) {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,6 +152,34 @@ public class RESERVATION {
             }            
         } catch (SQLException ex) {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    // create a function to get the room number from a reservation
+    public int getRoomNumberFromReservation(int reservationID)
+    {
+        PreparedStatement ps;
+        ResultSet rs;
+        String selectQuery = "SELECT `room_number` FROM `reservations` WHERE `id`=?";
+        
+        try {
+            ps = my_connection.createConnection().prepareStatement(selectQuery);
+            ps.setInt(1, reservationID);
+            rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt(1);
+            }
+            else
+            {
+                return 0;
+            }
+
+            } 
+        catch (SQLException ex) {
+            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 }

@@ -19,21 +19,21 @@ import javax.swing.table.DefaultTableModel;
  * @author Heherson Domael
  */
 public class ROOMS {
-    
+
     MY_CONNECTION my_connection = new MY_CONNECTION();
-    
+
     // create a function to display all rooms type in jTable
         public void fillRooms_TYPE_Table(JTable table)
-    { 
+        {
         PreparedStatement ps;
         ResultSet rs;
         String selectQuery = "SELECT * FROM `type`";
-        
+
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
-            
+
             rs = ps.executeQuery();
-            
+
             DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 
             Object[] row;
@@ -63,8 +63,8 @@ public class ROOMS {
         { 
         PreparedStatement ps;
         ResultSet rs;
-        String selectQuery = "SELECT * FROM `rooms`";
-        
+        String selectQuery = "SELECT * FROM `rooms` ORDER BY `dateAndTimeAdded` DESC";
+
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
             
@@ -115,7 +115,7 @@ public class ROOMS {
         public boolean addRoom(int number, int type, String phone)
         {
         PreparedStatement st;
-        String addQuery = "INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`) VALUES (?,?,?,?)";
+        String addQuery = "INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`, `dateAndTimeAdded`) VALUES (?,?,?,?,NOW())";
         try {
            st = my_connection.createConnection().prepareStatement(addQuery);
            

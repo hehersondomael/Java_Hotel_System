@@ -25,3 +25,30 @@ Manage Clients Page
 	/Disable the Add New Client button
 *On click of Exit button
 	/Show "Are you sure you want to exit? Changes you made may not be saved.
+
+Manage Rooms Page
+*On launch
+	/Disable the following buttons: Edit, Remove, Clear Fields
+	/Sort table by date added (newest added on top)
+	/Allow table to be sorted by ID, First Name, Last Name, Contact No., Email	
+	!If fields are empty, disable Clear Fields button. Else, enable it.
+	Hide "1" from the select box; show "Select Type" (unselectable) instead
+	Real-time updating of data (no need for Refresh Data button)
+	Check duplicate data
+	Include Search Rooms feature
+	Fix column widths
+*On Click of Add New Room button
+	/Check if input room number already exists
+	/Clear all fields
+*On click of Refresh Data button
+	/Clear all fields
+	/Disable the following buttons: Edit, Remove, Clear Fields
+*On click of Remove button
+	/Clear all fields
+	/Disable the following buttons: Edit, Remove, Clear Fields
+*On click of a table value
+	/Disable the Add New Room button
+*On click of Exit button
+	/Show "Are you sure you want to exit? Changes you made may not be saved.
+*Other
+	/Remove AUTO_INCREMENT attribute of r_number in MySQL

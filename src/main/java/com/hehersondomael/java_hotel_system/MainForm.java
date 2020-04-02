@@ -5,7 +5,10 @@
  */
 package com.hehersondomael.java_hotel_system;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +21,20 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
+        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int x = JOptionPane.showConfirmDialog(null, "Log Out?",
+                        "Close", JOptionPane.YES_NO_OPTION);
+                if (x==JOptionPane.YES_OPTION)
+                    e.getWindow().dispose();
+                else
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
     }
 
     /**
@@ -112,6 +129,7 @@ public class MainForm extends javax.swing.JFrame {
         roomsForm.pack();
         roomsForm.setLocationRelativeTo(null);
         roomsForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }//GEN-LAST:event_jMenuItemRoomsActionPerformed
 
     private void jMenuItemReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReservationsActionPerformed
@@ -121,6 +139,7 @@ public class MainForm extends javax.swing.JFrame {
         reservationsForm.pack();
         reservationsForm.setLocationRelativeTo(null);
         reservationsForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }//GEN-LAST:event_jMenuItemReservationsActionPerformed
 
     private void jMenuItemClientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientsActionPerformed
@@ -130,6 +149,7 @@ public class MainForm extends javax.swing.JFrame {
         clientsForm.pack();
         clientsForm.setLocationRelativeTo(null);
         clientsForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }//GEN-LAST:event_jMenuItemClientsActionPerformed
 
     /**

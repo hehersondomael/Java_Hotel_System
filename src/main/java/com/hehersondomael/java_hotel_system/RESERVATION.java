@@ -76,7 +76,7 @@ public class RESERVATION {
     {
         PreparedStatement st;
         String editQuery = "UPDATE `reservations` SET `client_id`=?, `room_number`=?, `date_in`=?, `date_out`=? WHERE `id`=?";
-        
+
         try {
            st = my_connection.createConnection().prepareStatement(editQuery);
 
@@ -124,12 +124,12 @@ public class RESERVATION {
         
     }
 
-        public void fillReservationsJTable(JTable table)
-        { 
+    public void fillReservationsJTable(JTable table)
+    { 
         PreparedStatement ps;
         ResultSet rs;
-        String selectQuery = "SELECT * FROM `reservations`";
-        
+        String selectQuery = "SELECT * FROM `reservations` ORDER BY `id` DESC";
+
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
             

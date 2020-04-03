@@ -38,7 +38,6 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         jTable1.setRowHeight(40);
         
         // create a button group for the radioButtons
-        ButtonGroup bg = new ButtonGroup();
 //        bg.add(jRadioButtonYes);
 //        bg.add(jRadioButtonNo);
 
@@ -66,7 +65,6 @@ public class ManageRoomsForm extends javax.swing.JFrame {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-        
     }
 
     /**
@@ -359,7 +357,7 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
 
         // get the selected row index
-        int rIndex = jTable1.getSelectedRow();
+        int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
         
         // display data
         jTextFieldRoomNo.setText(model.getValueAt(rIndex,0).toString());

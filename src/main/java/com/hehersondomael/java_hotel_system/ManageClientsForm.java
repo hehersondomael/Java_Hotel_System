@@ -510,6 +510,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jButtonAddClient.setEnabled(true);
         jButtonEditClient.setEnabled(false);
         jButtonRemoveClient.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed

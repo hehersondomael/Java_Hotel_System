@@ -1,7 +1,11 @@
+04032020 1631H
+
 / Completely solved
 ! Partially solved
 
-Manage Clients Page
+1. Case sensitivity of login credentials
+
+2. Manage Clients Page
 *On launch
 	/Disable the following buttons: Edit, Remove, Clear Fields
 	/Disable ID field (auto-generated ID no.)
@@ -24,9 +28,9 @@ Manage Clients Page
 	/Disable ID field (auto-generated ID no.)
 	/Disable the Add New Client button
 *On click of Exit button
-	/Show "Are you sure you want to exit? Changes you made may not be saved.
+	!Show "Are you sure you want to exit? Changes you made may not be saved.
 
-Manage Rooms Page
+3. Manage Rooms Page
 *On launch
 	/Disable the following buttons: Edit, Remove, Clear Fields
 	/Sort table by date added (newest added on top)
@@ -49,6 +53,31 @@ Manage Rooms Page
 *On click of a table value
 	/Disable the Add New Room button
 *On click of Exit button
-	/Show "Are you sure you want to exit? Changes you made may not be saved.
+	!Show "Are you sure you want to exit? Changes you made may not be saved.
 *Other
 	/Remove AUTO_INCREMENT attribute of r_number in MySQL
+
+4. Manage Reservation Page
+*On launch
+	/Disable the following buttons: Edit, Remove, Clear Fields
+	/Sort table by date added (newest added on top)
+	/Allow table to be sorted by ID, First Name, Last Name, Contact No., Email	
+	!If fields are empty, disable Clear Fields button. Else, enable it.
+	Real-time updating of data (no need for Refresh Data button)
+	Add disabled Client name and Phone No. (show dropdown box whose options are registered Client No. and Names)
+	Check duplicate data
+	Include Search Rooms feature
+	Fix column widths
+	Add search button
+*On Click of Add New Room button
+	/Clear all fields
+*On click of Refresh Data button
+	/Clear all fields
+	/Disable the following buttons: Edit, Remove, Clear Fields
+*On click of Remove button
+	/Clear all fields
+	/Disable the following buttons: Edit, Remove, Clear Fields
+*On click of a table value
+	/Disable the Add New Room button
+*On click of Exit button
+	!Show "Are you sure you want to exit? Changes you made may not be saved.

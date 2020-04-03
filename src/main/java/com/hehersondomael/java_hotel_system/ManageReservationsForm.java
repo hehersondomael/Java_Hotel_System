@@ -5,11 +5,14 @@
  */
 package com.hehersondomael.java_hotel_system;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,6 +31,31 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         
         reservation.fillReservationsJTable(jTable1);
         jTable1.setRowHeight(25);
+
+        jButtonEditReservation.setEnabled(false);
+        jButtonRemoveReservation.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
+
+       this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int x = JOptionPane.showConfirmDialog(null, "Exit?",
+                        "Close", JOptionPane.YES_NO_OPTION);
+                if (x==JOptionPane.YES_OPTION)
+                {
+                    e.getWindow().dispose();
+                    MainForm mainForm = new MainForm();
+                    mainForm.setVisible(true);
+                    mainForm.pack();
+                    mainForm.setLocationRelativeTo(null);
+                    mainForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                }
+                else
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });        
     }
 
     /**
@@ -92,6 +120,8 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID:");
 
+        jTextFieldReservationID.setEditable(false);
+        jTextFieldReservationID.setBackground(new java.awt.Color(204, 204, 204));
         jTextFieldReservationID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -104,11 +134,21 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                 jTextFieldClientIDActionPerformed(evt);
             }
         });
+        jTextFieldClientID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldClientIDKeyTyped(evt);
+            }
+        });
 
         jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextFieldRoomNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldRoomNoActionPerformed(evt);
+            }
+        });
+        jTextFieldRoomNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldRoomNoKeyTyped(evt);
             }
         });
 
@@ -124,21 +164,29 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Date Out:");
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Reservation ID", "Client ID", "Room Number", "Date In", "Date Out"
+                "Reservation ID", "Client ID", "Room No.", "Date In", "Date Out"
             }
         )
-        // make the jTable cells not editable
-        {public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }}
-        );
+        {
+            Class[] types = { Integer.class, Integer.class, Integer.class, String.class, String.class};
+            boolean[] canEdit = { true, true, true, true, true};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return this.types[columnIndex];
+            }
+
+            public boolean isCellEditable(int columnIndex) {
+                return this.canEdit[columnIndex];
+            }
+        });
         jTable1.setGridColor(new java.awt.Color(255, 255, 0));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -197,8 +245,21 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         });
 
         jDateChooserDateIn.setDateFormatString("MMM dd yyyy");
+        jDateChooserDateIn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDateChooserDateInKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jDateChooserDateInKeyTyped(evt);
+            }
+        });
 
         jDateChooserDateOut.setDateFormatString("MMM dd yyyy");
+        jDateChooserDateOut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jDateChooserDateOutKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -310,14 +371,18 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldRoomNoActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        jButtonAddReservation.setEnabled(false);
+        jButtonEditReservation.setEnabled(true);
+        jButtonRemoveReservation.setEnabled(true);
+        jButtonClearFields.setEnabled(true);
         // display the selected row data in the jTextFields
 
         // get the jTable model
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
 
         // get the selected row index
-        int rIndex = jTable1.getSelectedRow();
-        
+        int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
+
         // display data
         jTextFieldReservationID.setText(model.getValueAt(rIndex,0).toString());
         jTextFieldClientID.setText(model.getValueAt(rIndex,1).toString());
@@ -361,8 +426,16 @@ public class ManageReservationsForm extends javax.swing.JFrame {
             else
             {
                 if (reservation.addReservation(client_id, room_number, date_in, date_out))
+                {
                     JOptionPane.showMessageDialog(rootPane, "New Reservation Added Successfully", "Add Reservation", JOptionPane.INFORMATION_MESSAGE);
-                else
+                    jTextFieldClientID.setText("");
+                    jTextFieldReservationID.setText("");
+                    jTextFieldRoomNo.setText("");
+                    // remove date from jDateChooser
+                    jDateChooserDateIn.setDate(null);
+                    jDateChooserDateOut.setDate(null);                    
+                }
+                    else
                     JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);
             }            
         }
@@ -377,8 +450,8 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     private void jButtonEditReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditReservationActionPerformed
         // edit the selected reservation
         // get data from the field
-      
-            try {
+
+        try {
                     int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
                     int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
                     int clientID = Integer.valueOf(jTextFieldClientID.getText());
@@ -393,21 +466,31 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                     Date tDD = dateFormat.parse(toDayDate);     
                     
                     // if the date_in is before or not equal to today date
-            if(!(dIn.after(tDD) || dIn.equals(tDD)))
-                JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
-            // if date_out is before date_in or not equal to date_in
-            else if (!(dOut.after(dIn) || dOut.equals(dIn)))
-            {
-                JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
-            }
+                    if(!(dIn.after(tDD) || dIn.equals(tDD)))
+                        JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
+                    // if date_out is before date_in or not equal to date_in
+                    else if (!(dOut.after(dIn) || dOut.equals(dIn)))
+                    {
+                        JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
+                    }
             // if everything is ok
-            else
-            {
-                if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
-                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
-                else
-                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
-            }
+                    else
+                    {
+                        if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
+                        {
+                            JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
+                            jTextFieldReservationID.setText("");
+                            jTextFieldClientID.setText("");
+                            jTextFieldRoomNo.setText("");
+                            jDateChooserDateIn.setDate(null);
+                            jDateChooserDateOut.setDate(null);
+                            jButtonAddReservation.setEnabled(true);
+                            jButtonEditReservation.setEnabled(false);
+                            jButtonRemoveReservation.setEnabled(false);
+                        }
+                        else
+                            JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
+                    }
             }
             catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number + Client ID + Reservation ID", "Data Number Error", JOptionPane.ERROR_MESSAGE);
@@ -426,7 +509,19 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                     int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
 
                     if (reservation.removeReservation(reservationID))
+                    {
                         JOptionPane.showMessageDialog(rootPane, "Reservation Deleted Successfully", "Remove Reservation", JOptionPane.INFORMATION_MESSAGE);
+                        jTextFieldClientID.setText("");
+                        jTextFieldReservationID.setText("");
+                        jTextFieldRoomNo.setText("");
+                        // remove date from jDateChooser
+                        jDateChooserDateIn.setDate(null);
+                        jDateChooserDateOut.setDate(null);
+                        jButtonAddReservation.setEnabled(true);
+                        jButtonEditReservation.setEnabled(false);
+                        jButtonRemoveReservation.setEnabled(false);
+                        jButtonClearFields.setEnabled(false);                        
+                    }
                     else
                         JOptionPane.showMessageDialog(rootPane, "Reservation Not Deleted", "Remove Reservation Error", JOptionPane.ERROR_MESSAGE);
                }
@@ -440,21 +535,97 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jTextFieldClientID.setText("");
         jTextFieldReservationID.setText("");
         jTextFieldRoomNo.setText("");
-
         // remove date from jDateChooser
         jDateChooserDateIn.setDate(null);
         jDateChooserDateOut.setDate(null);
+
+        jButtonAddReservation.setEnabled(true);
+        jButtonEditReservation.setEnabled(false);
+        jButtonRemoveReservation.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
         
         // if you want to set the date to the current date
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
         // clear the jTable first
-        jTable1.setModel(new DefaultTableModel(null, new Object[]{"Reservation ID","Client ID","Room Number","Date In","Date Out"}));
+        jTextFieldReservationID.setText("");
+        jTextFieldClientID.setText("");
+        jTextFieldRoomNo.setText("");
+        jDateChooserDateIn.setDate(null);
+        jDateChooserDateOut.setDate(null);
+
+        jButtonAddReservation.setEnabled(true);
+        jButtonEditReservation.setEnabled(false);
+        jButtonRemoveReservation.setEnabled(false);
+        jButtonClearFields.setEnabled(false);        
+
+        jTable1.setModel(new DefaultTableModel(new Object [][] {},
+                new String [] {"Reservation ID", "Client ID", "Room No.", "Date In", "Date Out" })
+                // make the jTable cells not editable
+                {
+                Class[] types = { Integer.class, Integer.class, Integer.class, String.class, String.class};
+                boolean[] canEdit = { true, true, true, true, true};
+
+                @Override
+                public Class getColumnClass(int columnIndex) {
+                    return this.types[columnIndex];
+                }
+
+                public boolean isCellEditable(int columnIndex) {
+                    return this.canEdit[columnIndex];
+                }
+                }
+        
+        );
 
         // populate the jTable
         reservation.fillReservationsJTable(jTable1);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
+
+    private void jTextFieldClientIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldClientIDKeyTyped
+        // TODO add your handling code here:
+        if (jTextFieldReservationID.getText().trim().equals("") &&
+            jTextFieldClientID.getText().trim().equals("") &&
+            jTextFieldRoomNo.getText().trim().equals(""))
+                jButtonClearFields.setEnabled(false);
+        if (!(jTextFieldReservationID.getText().trim().equals("")) ||
+            !(jTextFieldClientID.getText().trim().equals("")) ||
+            !(jTextFieldRoomNo.getText().trim().equals("")))
+                jButtonClearFields.setEnabled(true);
+    }//GEN-LAST:event_jTextFieldClientIDKeyTyped
+
+    private void jTextFieldRoomNoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRoomNoKeyTyped
+        // TODO add your handling code here:
+        if (jTextFieldReservationID.getText().trim().equals("") &&
+            jTextFieldClientID.getText().trim().equals("") &&
+            jTextFieldRoomNo.getText().trim().equals(""))
+                jButtonClearFields.setEnabled(false);
+        if (!(jTextFieldReservationID.getText().trim().equals("")) ||
+            !(jTextFieldClientID.getText().trim().equals("")) ||
+            !(jTextFieldRoomNo.getText().trim().equals("")))
+                jButtonClearFields.setEnabled(true);
+    }//GEN-LAST:event_jTextFieldRoomNoKeyTyped
+
+    private void jDateChooserDateInKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooserDateInKeyTyped
+        // TODO add your handling code here:
+        if (jTextFieldReservationID.getText().trim().equals("") &&
+            jTextFieldClientID.getText().trim().equals("") &&
+            jTextFieldRoomNo.getText().trim().equals(""))
+                jButtonClearFields.setEnabled(false);
+        if (!(jTextFieldReservationID.getText().trim().equals("")) ||
+            !(jTextFieldClientID.getText().trim().equals("")) ||
+            !(jTextFieldRoomNo.getText().trim().equals("")))
+                jButtonClearFields.setEnabled(true);
+    }//GEN-LAST:event_jDateChooserDateInKeyTyped
+
+    private void jDateChooserDateOutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooserDateOutKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jDateChooserDateOutKeyTyped
+
+    private void jDateChooserDateInKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooserDateInKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jDateChooserDateInKeyReleased
 
     /**
      * @param args the command line arguments

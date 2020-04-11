@@ -174,7 +174,7 @@ public class LoginForm extends javax.swing.JFrame {
         
         String username = jTextFieldUsername.getText();
         String password = String.valueOf(jPasswordField1.getPassword());
-        
+
         if(username.trim().equals(""))
         {
             JOptionPane.showMessageDialog(rootPane, "Enter Your Username to Login", "Empty Username", 2);
@@ -192,9 +192,9 @@ public class LoginForm extends javax.swing.JFrame {
                 
                 ps.setString(1,username);
                 ps.setString(2,password);
-                
+
                 rs = ps.executeQuery();
-                
+
                 if(rs.next())
                 {
                     // if this user exists open the main form and close the login form

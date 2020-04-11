@@ -97,7 +97,6 @@ public class CLIENT { // the client class
 
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
-
             rs = ps.executeQuery();
 
             DefaultTableModel tableModel = (DefaultTableModel)table.getModel();

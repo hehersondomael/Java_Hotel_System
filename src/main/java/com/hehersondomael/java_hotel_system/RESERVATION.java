@@ -49,7 +49,6 @@ public class RESERVATION {
                 st.setInt(2, room_number);
                 st.setString(3, dateIn);
                 st.setString(4, dateOut);
-                System.out.println(room.isRoomReserved(room_number).equals("No"));
 
                 if(room.isRoomReserved(room_number).equals("No"))
                 {

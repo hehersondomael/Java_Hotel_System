@@ -28,7 +28,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
      */
     public ManageReservationsForm() {
         initComponents();
-        
+
         reservation.fillReservationsJTable(jTable1);
         jTable1.setRowHeight(25);
 
@@ -543,7 +543,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jButtonEditReservation.setEnabled(false);
         jButtonRemoveReservation.setEnabled(false);
         jButtonClearFields.setEnabled(false);
-        
+
         // if you want to set the date to the current date
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 

@@ -7,7 +7,6 @@ package com.hehersondomael.java_hotel_system;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -28,31 +27,21 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         initComponents();
         
         
-        // display room Types id in combobox
         room.fillRooms_TYPE_JCombobox(jComboBoxType);
-
-        // show all rooms in the JTable
         room.fillRoomsJTable(jTable1);
-        
-        // set a height to the jTable
+
+        jComboBoxType.setSelectedIndex(-1);
         jTable1.setRowHeight(40);
-        
-        // create a button group for the radioButtons
-//        bg.add(jRadioButtonYes);
-//        bg.add(jRadioButtonNo);
 
         jButtonEditRoom.setEnabled(false);
         jButtonRemoveRoom.setEnabled(false);
         jButtonClearFields.setEnabled(false);
 
        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int x = JOptionPane.showConfirmDialog(null, "Exit?",
-                        "Close", JOptionPane.YES_NO_OPTION);
-                if (x==JOptionPane.YES_OPTION)
+                if (JOptionPane.showConfirmDialog(null, "Exit?", "Close", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
                 {
                     e.getWindow().dispose();
                     MainForm mainForm = new MainForm();
@@ -64,7 +53,8 @@ public class ManageRoomsForm extends javax.swing.JFrame {
                 else
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
-        });
+        }
+        );
     }
 
     /**
@@ -127,7 +117,7 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Number:");
 
-        jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldRoomNo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFieldRoomNoKeyTyped(evt);
@@ -138,7 +128,7 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Type:");
 
-        jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldContactNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldContactNoActionPerformed(evt);
@@ -155,7 +145,7 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         jLabel5.setText("Contact No.:");
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -235,7 +225,8 @@ public class ManageRoomsForm extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jComboBoxType.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jComboBoxType.setMaximumRowCount(5);
         jComboBoxType.setPreferredSize(new java.awt.Dimension(58, 28));
         jComboBoxType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,34 +337,16 @@ public class ManageRoomsForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        
-        // display the selected row data in the jTextFields
         jButtonAddRoom.setEnabled(false);
         jButtonEditRoom.setEnabled(true);
         jButtonRemoveRoom.setEnabled(true);
         jButtonClearFields.setEnabled(true);
 
-        // get the jTable model
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-
-        // get the selected row index
         int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
-        
-        // display data
         jTextFieldRoomNo.setText(model.getValueAt(rIndex,0).toString());
         jComboBoxType.setSelectedItem(model.getValueAt(rIndex,1));
         jTextFieldContactNo.setText(model.getValueAt(rIndex,2).toString());
-        
-        String isReserved = model.getValueAt(rIndex,3).toString();
-        
-//        if (isReserved.equals("Yes"))
-//        {
-//            jRadioButtonYes.setSelected(true);
-//        }
-//        else if (isReserved.equals("No"))
-//        {
-//            jRadioButtonNo.setSelected(true);
-//        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonAddRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddRoomActionPerformed
@@ -386,100 +359,65 @@ public class ManageRoomsForm extends javax.swing.JFrame {
             {
                 JOptionPane.showMessageDialog(rootPane, "New Room Added Successfully", "Add Room", JOptionPane.INFORMATION_MESSAGE);
                 jTextFieldRoomNo.setText("");
-                jComboBoxType.setSelectedIndex(0);
-                jTextFieldContactNo.setText("");
-
-                jButtonAddRoom.setEnabled(true);
-                jButtonEditRoom.setEnabled(false);
-                jButtonRemoveRoom.setEnabled(false);                
+                ClearFields();
+               
             }
             else
                 JOptionPane.showMessageDialog(rootPane, "Room NOT Added", "Add Room Error", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
-            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
+          }
     }//GEN-LAST:event_jButtonAddRoomActionPerformed
 
     private void jButtonEditRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditRoomActionPerformed
-        // edit the selected client
-        // get data from the field
-        int roomNumber = 0;
+        int roomNumber;
         int type = Integer.valueOf(jComboBoxType.getSelectedItem().toString());
         String phone = jTextFieldContactNo.getText();
         String isReserved = "No";
-        
-//        if(jRadioButtonYes.isSelected())
-//        {
-//            isReserved = "Yes";
-//        }
-        
+
         if(phone.trim().equals(""))        
             JOptionPane.showMessageDialog(rootPane, "Enter the room phone Number", "Empty fields", JOptionPane.WARNING_MESSAGE);        
         else
-        { 
             try {
                     roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
 
                     if (room.editRoom(roomNumber,type,phone,isReserved))
                         JOptionPane.showMessageDialog(rootPane, "Room Data Updated Successfully", "Edit Room", JOptionPane.INFORMATION_MESSAGE);
                     else
-                    {
                         JOptionPane.showMessageDialog(rootPane, "Room Data Not Updated", "Edit Room Error", JOptionPane.ERROR_MESSAGE);
-                    }
                }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+            catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
+                  }
     }//GEN-LAST:event_jButtonEditRoomActionPerformed
 
     private void jButtonRemoveRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveRoomActionPerformed
-        // delete the selected room
         try {
-                    int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
+            int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
 
-                    if (room.removeRoom(roomNumber))
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "Room Data Deleted Successfully", "Remove Room", JOptionPane.INFORMATION_MESSAGE);
-
-                        jTextFieldRoomNo.setText("");
-                        jComboBoxType.setSelectedIndex(0);
-                        jTextFieldContactNo.setText("");
-
-                        jButtonAddRoom.setEnabled(true);
-                        jButtonEditRoom.setEnabled(false);
-                        jButtonRemoveRoom.setEnabled(false);
-                        jButtonClearFields.setEnabled(false);
-                    }
-                    else
-                        JOptionPane.showMessageDialog(rootPane, "Room Data Not Deleted", "Remove Room Error", JOptionPane.ERROR_MESSAGE);
-               }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room Number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
+            if (room.removeRoom(roomNumber))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Room Data Deleted Successfully", "Remove Room", JOptionPane.INFORMATION_MESSAGE);
+                ClearFields();
+                jButtonClearFields.setEnabled(false);
             }
+            else
+                JOptionPane.showMessageDialog(rootPane, "Room Data Not Deleted", "Remove Room Error", JOptionPane.ERROR_MESSAGE);
+       } catch(NumberFormatException ex) {
+           JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room Number", "Room Number Error", JOptionPane.ERROR_MESSAGE);
+         }
     }//GEN-LAST:event_jButtonRemoveRoomActionPerformed
 
     private void jButtonClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldsActionPerformed
-        // remove text fields from all jTextFields
         jTextFieldRoomNo.setText("");
         jTextFieldContactNo.setText("");
-        jComboBoxType.setSelectedIndex(0);
-//        jRadioButtonNo.setSelected(true);
+        jComboBoxType.setSelectedIndex(-1);
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
-        jTextFieldRoomNo.setText("");
-        jComboBoxType.setSelectedIndex(0);
-        jTextFieldContactNo.setText("");
-        jTextFieldContactNo.setText("");
-
-        jButtonAddRoom.setEnabled(true);
-        jButtonEditRoom.setEnabled(false);
-        jButtonRemoveRoom.setEnabled(false);
+        ClearFields();
         jButtonClearFields.setEnabled(false);
 
-        // clear the jTable first
         jTable1.setModel(new DefaultTableModel(new Object [][] {},
                 new String [] {"Room Number", "Type", "Phone", "Reserved" })
                 // make the jTable cells not editable
@@ -495,9 +433,9 @@ public class ManageRoomsForm extends javax.swing.JFrame {
                 public boolean isCellEditable(int columnIndex) {
                     return this.canEdit[columnIndex];
                 }
-                });
+                }
+        );
 
-        // populate the jTable
         room.fillRoomsJTable(jTable1);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
 
@@ -511,7 +449,6 @@ public class ManageRoomsForm extends javax.swing.JFrame {
         roomTypesForm.pack();
         roomTypesForm.setLocationRelativeTo(null);
         roomTypesForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
     }//GEN-LAST:event_jButtonShowRoomTypesActionPerformed
 
     private void jTextFieldContactNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldContactNoActionPerformed
@@ -542,6 +479,15 @@ public class ManageRoomsForm extends javax.swing.JFrame {
                 jButtonClearFields.setEnabled(true);
     }//GEN-LAST:event_jTextFieldContactNoKeyTyped
 
+    private void ClearFields()
+    {
+        jComboBoxType.setSelectedIndex(-1);
+        jTextFieldContactNo.setText("");
+        jButtonAddRoom.setEnabled(true);
+        jButtonEditRoom.setEnabled(false);
+        jButtonRemoveRoom.setEnabled(false);
+    } 
+    
     /**
      * @param args the command line arguments
      */

@@ -14,7 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -41,9 +43,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int x = JOptionPane.showConfirmDialog(null, "Exit?",
-                        "Close", JOptionPane.YES_NO_OPTION);
-                if (x==JOptionPane.YES_OPTION)
+                if (JOptionPane.showConfirmDialog(null, "Exit?", "Close", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
                 {
                     e.getWindow().dispose();
                     MainForm mainForm = new MainForm();
@@ -55,7 +55,10 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                 else
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
-        });        
+        }
+        );        
+
+        setJTableColumnsWidth(jTable1,180,20,20,20,50,50);
     }
 
     /**
@@ -122,13 +125,13 @@ public class ManageReservationsForm extends javax.swing.JFrame {
 
         jTextFieldReservationID.setEditable(false);
         jTextFieldReservationID.setBackground(new java.awt.Color(204, 204, 204));
-        jTextFieldReservationID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldReservationID.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Client ID:");
 
-        jTextFieldClientID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldClientID.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldClientID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldClientIDActionPerformed(evt);
@@ -140,7 +143,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldRoomNo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldRoomNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldRoomNoActionPerformed(evt);
@@ -330,7 +333,7 @@ public class ManageReservationsForm extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                             .addComponent(jDateChooserDateIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,30 +378,22 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         jButtonEditReservation.setEnabled(true);
         jButtonRemoveReservation.setEnabled(true);
         jButtonClearFields.setEnabled(true);
-        // display the selected row data in the jTextFields
 
-        // get the jTable model
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-
-        // get the selected row index
         int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
 
-        // display data
         jTextFieldReservationID.setText(model.getValueAt(rIndex,0).toString());
         jTextFieldClientID.setText(model.getValueAt(rIndex,1).toString());
         jTextFieldRoomNo.setText(model.getValueAt(rIndex,2).toString());
         
         try {
-            // display the dateIn and dateOut from jTable and jDateChooser
             Date dateIn = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rIndex,3).toString());
             jDateChooserDateIn.setDate(dateIn);
-
             Date dateOut = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rIndex,4).toString());
             jDateChooserDateOut.setDate(dateOut);
         } catch (ParseException ex) {
             Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+          }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddReservationActionPerformed
@@ -414,155 +409,92 @@ public class ManageReservationsForm extends javax.swing.JFrame {
             Date dOut = dateFormat.parse(date_out);
             Date tDD = dateFormat.parse(toDayDate);
 
-            // if the date_in is before or not equal to today date
             if(!(dIn.after(tDD) || dIn.equals(tDD)))
                 JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
-            // if date_out is before date_in or not equal to date_in
             else if (!(dOut.after(dIn) || dOut.equals(dIn)))
-            {
                 JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
-            }
-            // if everything is ok
             else
-            {
                 if (reservation.addReservation(client_id, room_number, date_in, date_out))
                 {
                     JOptionPane.showMessageDialog(rootPane, "New Reservation Added Successfully", "Add Reservation", JOptionPane.INFORMATION_MESSAGE);
                     jTextFieldClientID.setText("");
                     jTextFieldReservationID.setText("");
                     jTextFieldRoomNo.setText("");
-                    // remove date from jDateChooser
                     jDateChooserDateIn.setDate(null);
-                    jDateChooserDateOut.setDate(null);                    
+                    jDateChooserDateOut.setDate(null);
                 }
-                    else
-                    JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);
-            }            
-        }
-        catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number + Client ID", "Input Fields Error", JOptionPane.ERROR_MESSAGE);
-            }
-        catch (ParseException ex) {
-            Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Reservation NOT Added", "Add Reservation Error", JOptionPane.ERROR_MESSAGE);       
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the room number + Client ID", "Input Fields Error", JOptionPane.ERROR_MESSAGE);
+          }
+          catch (ParseException ex) {
+              Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }//GEN-LAST:event_jButtonAddReservationActionPerformed
 
     private void jButtonEditReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditReservationActionPerformed
-        // edit the selected reservation
-        // get data from the field
-
         try {
-                    int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
-                    int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
-                    int clientID = Integer.valueOf(jTextFieldClientID.getText());
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    String date_in = dateFormat.format(jDateChooserDateIn.getDate());
-                    String date_out = dateFormat.format(jDateChooserDateOut.getDate());
-                    
-                    String toDayDate = dateFormat.format(new Date());
+            int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
+            int roomNumber = Integer.valueOf(jTextFieldRoomNo.getText());
+            int clientID = Integer.valueOf(jTextFieldClientID.getText());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date_in = dateFormat.format(jDateChooserDateIn.getDate());
+            String date_out = dateFormat.format(jDateChooserDateOut.getDate());
+            String toDayDate = dateFormat.format(new Date());
 
-                    Date dIn = dateFormat.parse(date_in);
-                    Date dOut = dateFormat.parse(date_out);
-                    Date tDD = dateFormat.parse(toDayDate);     
-                    
-                    // if the date_in is before or not equal to today date
-                    if(!(dIn.after(tDD) || dIn.equals(tDD)))
-                        JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
-                    // if date_out is before date_in or not equal to date_in
-                    else if (!(dOut.after(dIn) || dOut.equals(dIn)))
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
-                    }
-            // if everything is ok
-                    else
-                    {
-                        if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
-                        {
-                            JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
-                            jTextFieldReservationID.setText("");
-                            jTextFieldClientID.setText("");
-                            jTextFieldRoomNo.setText("");
-                            jDateChooserDateIn.setDate(null);
-                            jDateChooserDateOut.setDate(null);
-                            jButtonAddReservation.setEnabled(true);
-                            jButtonEditReservation.setEnabled(false);
-                            jButtonRemoveReservation.setEnabled(false);
-                        }
-                        else
-                            JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
-                    }
-            }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number + Client ID + Reservation ID", "Data Number Error", JOptionPane.ERROR_MESSAGE);
-            }
-            catch(NullPointerException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Selecte the Date In and Date Out", "Date Error", JOptionPane.ERROR_MESSAGE);
-            }
-            catch (ParseException ex) {
-            Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Date dIn = dateFormat.parse(date_in);
+            Date dOut = dateFormat.parse(date_out);
+            Date tDD = dateFormat.parse(toDayDate);     
+
+            if(!(dIn.after(tDD) || dIn.equals(tDD)))
+                JOptionPane.showMessageDialog(rootPane, "The date in must be after or equal to today date", "Date In Error", JOptionPane.ERROR_MESSAGE);
+            else if (!(dOut.after(dIn) || dOut.equals(dIn)))
+                JOptionPane.showMessageDialog(rootPane, "The date Out must be after or equal to today date IN ", "Date Out Error", JOptionPane.ERROR_MESSAGE);
+            else
+                if (reservation.editReservation(reservationID, clientID, roomNumber, date_in, date_out))
+                {
+                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Updated Successfully", "Edit Reservation", JOptionPane.INFORMATION_MESSAGE);
+                    ClearFields();
+                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Reservation Information Not Updated", "Edit Reservation Error", JOptionPane.ERROR_MESSAGE);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Room number + Client ID + Reservation ID", "Data Number Error", JOptionPane.ERROR_MESSAGE);
+          }
+          catch(NullPointerException ex) {
+              JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Selecte the Date In and Date Out", "Date Error", JOptionPane.ERROR_MESSAGE);
+          }
+          catch (ParseException ex) {
+              Logger.getLogger(ManageReservationsForm.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }//GEN-LAST:event_jButtonEditReservationActionPerformed
 
     private void jButtonRemoveReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveReservationActionPerformed
-        // delete the selected room
         try {
-                    int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
+            int reservationID = Integer.valueOf(jTextFieldReservationID.getText());
 
-                    if (reservation.removeReservation(reservationID))
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "Reservation Deleted Successfully", "Remove Reservation", JOptionPane.INFORMATION_MESSAGE);
-                        jTextFieldClientID.setText("");
-                        jTextFieldReservationID.setText("");
-                        jTextFieldRoomNo.setText("");
-                        // remove date from jDateChooser
-                        jDateChooserDateIn.setDate(null);
-                        jDateChooserDateOut.setDate(null);
-                        jButtonAddReservation.setEnabled(true);
-                        jButtonEditReservation.setEnabled(false);
-                        jButtonRemoveReservation.setEnabled(false);
-                        jButtonClearFields.setEnabled(false);                        
-                    }
-                    else
-                        JOptionPane.showMessageDialog(rootPane, "Reservation Not Deleted", "Remove Reservation Error", JOptionPane.ERROR_MESSAGE);
-               }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Reservation ID", "Reservation ID Error", JOptionPane.ERROR_MESSAGE);
-            }        
+            if (reservation.removeReservation(reservationID))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Reservation Deleted Successfully", "Remove Reservation", JOptionPane.INFORMATION_MESSAGE);
+                ClearFields();                        
+            }
+            else
+                JOptionPane.showMessageDialog(rootPane, "Reservation Not Deleted", "Remove Reservation Error", JOptionPane.ERROR_MESSAGE);
+       } catch(NumberFormatException ex) {
+           JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the Reservation ID", "Reservation ID Error", JOptionPane.ERROR_MESSAGE);
+         }        
     }//GEN-LAST:event_jButtonRemoveReservationActionPerformed
 
     private void jButtonClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldsActionPerformed
-        // remove text fields from all jTextFields
-        jTextFieldClientID.setText("");
-        jTextFieldReservationID.setText("");
-        jTextFieldRoomNo.setText("");
-        // remove date from jDateChooser
-        jDateChooserDateIn.setDate(null);
-        jDateChooserDateOut.setDate(null);
-
-        jButtonAddReservation.setEnabled(true);
-        jButtonEditReservation.setEnabled(false);
-        jButtonRemoveReservation.setEnabled(false);
-        jButtonClearFields.setEnabled(false);
-
-        // if you want to set the date to the current date
+        ClearFields();
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
-        // clear the jTable first
-        jTextFieldReservationID.setText("");
-        jTextFieldClientID.setText("");
-        jTextFieldRoomNo.setText("");
-        jDateChooserDateIn.setDate(null);
-        jDateChooserDateOut.setDate(null);
-
-        jButtonAddReservation.setEnabled(true);
-        jButtonEditReservation.setEnabled(false);
-        jButtonRemoveReservation.setEnabled(false);
-        jButtonClearFields.setEnabled(false);        
+        ClearFields();
 
         jTable1.setModel(new DefaultTableModel(new Object [][] {},
                 new String [] {"Reservation ID", "Client ID", "Room No.", "Date In", "Date Out" })
-                // make the jTable cells not editable
                 {
                 Class[] types = { Integer.class, Integer.class, Integer.class, String.class, String.class};
                 boolean[] canEdit = { true, true, true, true, true};
@@ -579,12 +511,11 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         
         );
 
-        // populate the jTable
         reservation.fillReservationsJTable(jTable1);
+        setJTableColumnsWidth(jTable1,180,20,20,20,50,50);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
 
     private void jTextFieldClientIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldClientIDKeyTyped
-        // TODO add your handling code here:
         if (jTextFieldReservationID.getText().trim().equals("") &&
             jTextFieldClientID.getText().trim().equals("") &&
             jTextFieldRoomNo.getText().trim().equals(""))
@@ -596,7 +527,6 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldClientIDKeyTyped
 
     private void jTextFieldRoomNoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRoomNoKeyTyped
-        // TODO add your handling code here:
         if (jTextFieldReservationID.getText().trim().equals("") &&
             jTextFieldClientID.getText().trim().equals("") &&
             jTextFieldRoomNo.getText().trim().equals(""))
@@ -608,7 +538,6 @@ public class ManageReservationsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldRoomNoKeyTyped
 
     private void jDateChooserDateInKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooserDateInKeyTyped
-        // TODO add your handling code here:
         if (jTextFieldReservationID.getText().trim().equals("") &&
             jTextFieldClientID.getText().trim().equals("") &&
             jTextFieldRoomNo.getText().trim().equals(""))
@@ -627,6 +556,33 @@ public class ManageReservationsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jDateChooserDateInKeyReleased
 
+    public void ClearFields()
+    {
+        jTextFieldReservationID.setText("");
+        jTextFieldClientID.setText("");
+        jTextFieldRoomNo.setText("");
+        jDateChooserDateIn.setDate(null);
+        jDateChooserDateOut.setDate(null);
+        jButtonAddReservation.setEnabled(true);
+        jButtonEditReservation.setEnabled(false);
+        jButtonRemoveReservation.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
+    }
+
+    public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth, double... percentages)
+    {
+        double total = 0;
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            total += percentages[i];
+        }
+
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth((int)
+                    (tablePreferredWidth * (percentages[i] / total)));
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

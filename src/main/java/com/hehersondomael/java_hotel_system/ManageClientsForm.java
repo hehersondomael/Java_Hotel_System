@@ -12,7 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -28,24 +30,16 @@ public class ManageClientsForm extends javax.swing.JFrame {
 
     public ManageClientsForm() {
         initComponents();
-        
-        // add a white border to clear fields button
-        // Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.white);
-        // jButtonClearFields.setBorder(border);
-        // populate the jtable
         client.fillClientTable(jTable1);
         jButtonEditClient.setEnabled(false);
         jButtonRemoveClient.setEnabled(false);
         jButtonClearFields.setEnabled(false);
 
-       this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int x = JOptionPane.showConfirmDialog(null, "Exit?",
-                        "Close", JOptionPane.YES_NO_OPTION);
-                if (x==JOptionPane.YES_OPTION)
+                if (JOptionPane.showConfirmDialog(null, "Exit?", "Close", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
                 {
                     e.getWindow().dispose();
                     MainForm mainForm = new MainForm();
@@ -57,7 +51,10 @@ public class ManageClientsForm extends javax.swing.JFrame {
                 else
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
-        });
+        }
+        );
+
+        setJTableColumnsWidth(jTable1,320,5,40,40,35,80);
     }
 
     /**
@@ -123,13 +120,13 @@ public class ManageClientsForm extends javax.swing.JFrame {
 
         jTextFieldID.setEditable(false);
         jTextFieldID.setBackground(new java.awt.Color(204, 204, 204));
-        jTextFieldID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldID.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name:");
 
-        jTextFieldFirstName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldFirstName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldFirstNameActionPerformed(evt);
@@ -144,7 +141,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldLastName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldLastName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldLastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldLastNameActionPerformed(evt);
@@ -163,7 +160,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name:");
 
-        jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldContactNo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldContactNo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldFirstNameKeyPressed(evt);
@@ -177,7 +174,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Contact No.:");
 
-        jTextFieldEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextFieldEmail.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTextFieldEmail.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldFirstNameKeyPressed(evt);
@@ -192,7 +189,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jLabel6.setText("Email:");
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -380,32 +377,24 @@ public class ManageClientsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldFirstNameActionPerformed
 
     private void jButtonAddClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddClientActionPerformed
-        // add a new client
-
-        // get data from the fields
-
         String fname = jTextFieldFirstName.getText().trim();
         String lname = jTextFieldLastName.getText().trim();
         String phone = jTextFieldContactNo.getText().trim();
         String email = jTextFieldEmail.getText().trim();
 
         if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
-        {
             JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
-        }
         else
         {
             try {
                 if (client.addClient(fname,lname,phone,email))
                 {
                     JOptionPane.showMessageDialog(rootPane, "New Client Added Successfully", "Add Client", JOptionPane.INFORMATION_MESSAGE);
-
                     jTextFieldID.setText("");
                     jTextFieldFirstName.setText("");
                     jTextFieldLastName.setText("");
                     jTextFieldContactNo.setText("");
                     jTextFieldEmail.setText("");
-
                     jButtonAddClient.setEnabled(true);
                     jButtonEditClient.setEnabled(false);
                     jButtonRemoveClient.setEnabled(false);
@@ -423,15 +412,9 @@ public class ManageClientsForm extends javax.swing.JFrame {
         jButtonEditClient.setEnabled(true);
         jButtonRemoveClient.setEnabled(true);
         jButtonClearFields.setEnabled(true);
-        // display the selected row data in the jTextFields
 
-        // get the jTable model
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-
-        // get the selected row index
         int rIndex = jTable1.convertRowIndexToModel(jTable1.getSelectedRow());
-
-        // display data
         jTextFieldID.setText(model.getValueAt(rIndex,0).toString());
         jTextFieldFirstName.setText(model.getValueAt(rIndex,1).toString());
         jTextFieldLastName.setText(model.getValueAt(rIndex,2).toString());
@@ -440,10 +423,7 @@ public class ManageClientsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonEditClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditClientActionPerformed
-        // edit the selected client
-        
-        // get data from the field
-        int id = 0;
+        int id;
         String fname = jTextFieldFirstName.getText();
         String lname = jTextFieldLastName.getText();
         String phone = jTextFieldContactNo.getText();
@@ -452,80 +432,41 @@ public class ManageClientsForm extends javax.swing.JFrame {
         if(fname.trim().equals("") || lname.trim().equals("") || phone.trim().equals(""))
             JOptionPane.showMessageDialog(rootPane, "Required fields: First Name, Last Name, Contact No.", "Empty fields", JOptionPane.WARNING_MESSAGE);
         else
-        { 
             try {
-                    id = Integer.valueOf(jTextFieldID.getText());
+                id = Integer.valueOf(jTextFieldID.getText());
 
-                    if (client.editClient(id,fname,lname,phone,email))
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "Client Data Updated Successfully", "Edit Client", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "Client Data Not Updated", "Edited Client Error", JOptionPane.ERROR_MESSAGE);
-                    }
-               }
-            catch(NumberFormatException ex) {
+                if (client.editClient(id,fname,lname,phone,email))
+                    JOptionPane.showMessageDialog(rootPane, "Client Data Updated Successfully", "Edit Client", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Client Data Not Updated", "Edited Client Error", JOptionPane.ERROR_MESSAGE);
+            } catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+              }
     }//GEN-LAST:event_jButtonEditClientActionPerformed
 
     private void jButtonRemoveClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveClientActionPerformed
-        // delete the selected client
         try {
-                    int id = Integer.valueOf(jTextFieldID.getText());
+            int id = Integer.valueOf(jTextFieldID.getText());
 
-                    if (client.removeClient(id))
-                    {
-                        JOptionPane.showMessageDialog(rootPane, "Client Data Deleted Successfully", "Remove Client", JOptionPane.INFORMATION_MESSAGE);
-
-                        jTextFieldID.setText("");
-                        jTextFieldFirstName.setText("");
-                        jTextFieldLastName.setText("");
-                        jTextFieldContactNo.setText("");
-                        jTextFieldEmail.setText("");
-
-                        jButtonAddClient.setEnabled(true);
-                        jButtonEditClient.setEnabled(false);
-                        jButtonRemoveClient.setEnabled(false);
-                        jButtonClearFields.setEnabled(false);
-                    }
-                    else
-                        JOptionPane.showMessageDialog(rootPane, "Client Data Not Deleted", "Remove Client Error", JOptionPane.ERROR_MESSAGE);
-               }
-            catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
+            if (client.removeClient(id))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Client Data Deleted Successfully", "Remove Client", JOptionPane.INFORMATION_MESSAGE);
+                ClearFields();
             }
+            else
+                JOptionPane.showMessageDialog(rootPane, "Client Data Not Deleted", "Remove Client Error", JOptionPane.ERROR_MESSAGE);
+       } catch(NumberFormatException ex) {
+           JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " Enter the client ID (number)", "Client ID Error", JOptionPane.ERROR_MESSAGE);
+         }
     }//GEN-LAST:event_jButtonRemoveClientActionPerformed
 
     private void jButtonClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldsActionPerformed
-        // remove text fields from all jTextFields
-        jTextFieldID.setText("");
-        jTextFieldFirstName.setText("");
-        jTextFieldLastName.setText("");
-        jTextFieldContactNo.setText("");
-        jTextFieldEmail.setText("");
-
-        jButtonAddClient.setEnabled(true);
-        jButtonEditClient.setEnabled(false);
-        jButtonRemoveClient.setEnabled(false);
-        jButtonClearFields.setEnabled(false);
+        ClearFields();
     }//GEN-LAST:event_jButtonClearFieldsActionPerformed
 
     private void jButton_Refresh_JTable_DataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Refresh_JTable_DataActionPerformed
-        jTextFieldID.setText("");
-        jTextFieldFirstName.setText("");
-        jTextFieldLastName.setText("");
-        jTextFieldContactNo.setText("");
-        jTextFieldEmail.setText("");
+        ClearFields();
 
-        jButtonAddClient.setEnabled(true);
-        jButtonEditClient.setEnabled(false);
-        jButtonRemoveClient.setEnabled(false);
-        jButtonClearFields.setEnabled(false);
-
-        // clear the jTable first
         jTable1.setModel(new DefaultTableModel(new Object [][] {},
                 new String [] {"ID", "First Name", "Last Name", "Contact No.", "Email" })
                 // make the jTable cells not editable
@@ -541,10 +482,11 @@ public class ManageClientsForm extends javax.swing.JFrame {
                 public boolean isCellEditable(int columnIndex) {
                     return this.canEdit[columnIndex];
                 }
-                });
+                }
+        );
 
-        // populate the jTable
         client.fillClientTable(jTable1);
+        setJTableColumnsWidth(jTable1,320,5,40,40,35,80);
     }//GEN-LAST:event_jButton_Refresh_JTable_DataActionPerformed
 
     private void jTextFieldFirstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameKeyTyped
@@ -564,6 +506,33 @@ public class ManageClientsForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextFieldFirstNameKeyPressed
 
+    public void ClearFields()
+    {
+        jTextFieldID.setText("");
+        jTextFieldFirstName.setText("");
+        jTextFieldLastName.setText("");
+        jTextFieldContactNo.setText("");
+        jTextFieldEmail.setText("");
+        jButtonAddClient.setEnabled(true);
+        jButtonEditClient.setEnabled(false);
+        jButtonRemoveClient.setEnabled(false);
+        jButtonClearFields.setEnabled(false);
+    }
+
+    public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth, double... percentages)
+    {
+        double total = 0;
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            total += percentages[i];
+        }
+
+        for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth((int)
+                    (tablePreferredWidth * (percentages[i] / total)));
+        }
+    }    
+    
     /**
      * @param args the command line arguments
      */

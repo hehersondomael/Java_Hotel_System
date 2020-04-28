@@ -24,7 +24,6 @@ public class LoginForm extends javax.swing.JFrame {
      */
     public LoginForm() {
         initComponents();
-        
         this.setLocationRelativeTo(null);
     }
 
@@ -159,6 +158,8 @@ public class LoginForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    MY_CONNECTION myconnection = new MY_CONNECTION();    
+    
     private void jTextFieldUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUsernameActionPerformed
@@ -176,46 +177,32 @@ public class LoginForm extends javax.swing.JFrame {
         String password = String.valueOf(jPasswordField1.getPassword());
 
         if(username.trim().equals(""))
-        {
             JOptionPane.showMessageDialog(rootPane, "Enter Your Username to Login", "Empty Username", 2);
-        }
         else if(password.trim().equals(""))
-        {
             JOptionPane.showMessageDialog(rootPane, "Enter your Password to Login", "Empty Password", 2);
-        }
         else
         {
-            MY_CONNECTION myconnection = new MY_CONNECTION();
             String selectQuery = "SELECT * FROM `users` WHERE `username`=? AND `password`=?";
             try {
-                ps = myconnection.createConnection().prepareStatement(selectQuery);
-                
+                ps = myconnection.createConnection().prepareStatement(selectQuery);                
                 ps.setString(1,username);
                 ps.setString(2,password);
-
                 rs = ps.executeQuery();
 
                 if(rs.next())
                 {
-                    // if this user exists open the main form and close the login form
                     MainForm mainform = new MainForm();
                     mainform.setVisible(true);
                     mainform.pack();
                     mainform.setLocationRelativeTo(null);
                     mainform.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
                     this.dispose();
                 }
                 else
-                {
-                    // if the user enter the wrong info
                     JOptionPane.showMessageDialog(rootPane, "Wrong UserName Or Password", "Login Error", 2);
-                    
-                }
-                
             } catch (SQLException ex) {
                 Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
+              }
         }
     }//GEN-LAST:event_jButtonLoginActionPerformed
 

@@ -1,4 +1,4 @@
-04032020 1631H
+04282020 1548H
 
 / Completely solved
 ! Partially solved
@@ -11,11 +11,11 @@
 	/Disable ID field (auto-generated ID no.)
 	/Sort table by date added (newest added on top)
 	/Allow table to be sorted by ID, First Name, Last Name, Contact No., Email	
+	/Fix column widths
 	!If fields are empty, disable Clear Fields button. Else, enable it.
 	Real-time updating of data (no need for Refresh Data button)
 	Check duplicate data
 	Include Search Clients feature
-	Fix column widths
 *On Click of Add New Client button
 	/Clear all fields
 *On click of Refresh Data button
@@ -35,12 +35,12 @@
 	/Disable the following buttons: Edit, Remove, Clear Fields
 	/Sort table by date added (newest added on top)
 	/Allow table to be sorted by ID, First Name, Last Name, Contact No., Email	
+	/Fix column widths
+	/Hide "1" as default selected Type
 	!If fields are empty, disable Clear Fields button. Else, enable it.
-	Hide "1" from the select box; show "Select Type" (unselectable) instead
 	Real-time updating of data (no need for Refresh Data button)
 	Check duplicate data
 	Include Search Rooms feature
-	Fix column widths
 *On Click of Add New Room button
 	/Check if input room number already exists
 	/Clear all fields
@@ -63,11 +63,11 @@
 	/Sort table by date added (newest added on top)
 	/Allow table to be sorted by ID, First Name, Last Name, Contact No., Email	
 	!If fields are empty, disable Clear Fields button. Else, enable it.
+	/Fix column widths
 	Real-time updating of data (no need for Refresh Data button)
 	Add disabled Client name and Phone No. (show dropdown box whose options are registered Client No. and Names)
 	Check duplicate data
 	Include Search Rooms feature
-	Fix column widths
 	Add search button
 *On Click of Add New Room button
 	/Clear all fields

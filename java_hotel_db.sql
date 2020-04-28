@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2020 at 02:09 PM
+-- Generation Time: Apr 28, 2020 at 09:50 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -44,9 +44,11 @@ INSERT INTO `clients` (`id`, `first_name`, `last_name`, `phone`, `email`) VALUES
 (1, 'Ivana', 'Alawi', '09101225996', 'ivanaalawi@gmail.com'),
 (2, 'Pipah', 'Pancho', '09236549742', 'ppancho@gmail.com'),
 (4, 'Jeremy', 'Sancebuche', '09993657865', 'mimiyuuuh@yahoo.com'),
-(8, 'Angel', 'Dei', '09229456781', ''),
 (11, 'Veronica', 'Duterte', '09981567953', ''),
-(16, 'Jessica', 'Soho', '09354409100', 'jessicasoho@gmail.com');
+(16, 'Jessica', 'Soho', '09354409100', 'jessicasoho@gmail.com'),
+(18, 'Catriona', 'Gray', '09275479832', 'cgray@gmail.com'),
+(19, 'Leng', 'Altura', '09174483597', 'altura.leng@outlook.com'),
+(20, 'Janina', 'Vela', '09278917467', 'janina.vela@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -62,6 +64,15 @@ CREATE TABLE `reservations` (
   `date_out` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `client_id`, `room_number`, `date_in`, `date_out`) VALUES
+(11, 1, 1, '2020-04-04', '2020-04-11'),
+(13, 4, 3, '2020-04-22', '2020-04-23'),
+(16, 1, 2, '2020-04-29', '2020-04-30');
+
 -- --------------------------------------------------------
 
 --
@@ -72,19 +83,20 @@ CREATE TABLE `rooms` (
   `r_number` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `phone` varchar(25) NOT NULL,
-  `reserved` varchar(20) NOT NULL
+  `reserved` varchar(20) NOT NULL,
+  `dateAndTimeAdded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rooms`
 --
 
-INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`) VALUES
-(1, 1, '09279833287', 'No'),
-(2, 2, '09493288323', 'No'),
-(3, 3, '09054349868', 'No'),
-(4, 4, '09971326980', 'No'),
-(5, 5, '09164268972', 'No');
+INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`, `dateAndTimeAdded`) VALUES
+(1, 1, '09274568954', 'Yes', '2020-04-02 23:19:49'),
+(2, 2, '09493288323', 'Yes', '2020-04-02 22:42:36'),
+(3, 3, '09054349868', 'Yes', '2020-04-02 22:42:41'),
+(4, 4, '09198861254', 'No', '2020-04-02 23:20:07'),
+(5, 5, '09158965564', 'No', '2020-04-03 15:47:03');
 
 -- --------------------------------------------------------
 
@@ -173,19 +185,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `rooms`
---
-ALTER TABLE `rooms`
-  MODIFY `r_number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=927548056;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `type`

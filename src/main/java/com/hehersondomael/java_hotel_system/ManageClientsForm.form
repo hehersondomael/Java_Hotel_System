@@ -209,7 +209,7 @@
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="0"/>
+              <Font name="Tahoma" size="16" style="0"/>
             </Property>
           </Properties>
         </Component>
@@ -227,7 +227,7 @@
         <Component class="javax.swing.JTextField" name="jTextFieldFirstName">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="0"/>
+              <Font name="Tahoma" size="16" style="0"/>
             </Property>
           </Properties>
           <Events>
@@ -239,7 +239,7 @@
         <Component class="javax.swing.JTextField" name="jTextFieldLastName">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="0"/>
+              <Font name="Tahoma" size="16" style="0"/>
             </Property>
           </Properties>
           <Events>
@@ -262,7 +262,7 @@
         <Component class="javax.swing.JTextField" name="jTextFieldContactNo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="0"/>
+              <Font name="Tahoma" size="16" style="0"/>
             </Property>
           </Properties>
           <Events>
@@ -284,7 +284,7 @@
         <Component class="javax.swing.JTextField" name="jTextFieldEmail">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="18" style="0"/>
+              <Font name="Tahoma" size="16" style="0"/>
             </Property>
           </Properties>
           <Events>
@@ -314,7 +314,7 @@
               <Properties>
                 <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="14" style="0"/>
+                  <Font name="Tahoma" size="12" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;First Name&quot;, &quot;Last Name&quot;, &quot;Contact No.&quot;, &quot;Email&quot;&#xa;    }&#xa;)&#xa;// make the jTable cells not editable&#xa;{&#xa;    Class[] types = { Integer.class, String.class, String.class, String.class, String.class};&#xa;    boolean[] canEdit = { true, true, true, true, true};&#xa;&#xa;    @Override&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return this.types[columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int columnIndex) {&#xa;        return this.canEdit[columnIndex];&#xa;    }&#xa;}" type="code"/>

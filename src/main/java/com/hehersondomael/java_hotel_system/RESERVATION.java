@@ -66,7 +66,7 @@ public class RESERVATION {
                     return false;
                 }
                 } catch (SQLException ex) {
-                    Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RESERVATION.class.getName()).log(Level.SEVERE, null, ex);
                     return false;
                 }
         }    
@@ -88,7 +88,7 @@ public class RESERVATION {
            return (st.executeUpdate() > 0);
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RESERVATION.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }        
@@ -117,10 +117,9 @@ public class RESERVATION {
            }
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RESERVATION.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
     }
 
     public void fillReservationsJTable(JTable table)
@@ -150,7 +149,7 @@ public class RESERVATION {
                 tableModel.addRow(row);
             }            
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RESERVATION.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
         
@@ -177,7 +176,7 @@ public class RESERVATION {
 
             } 
         catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RESERVATION.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
     }

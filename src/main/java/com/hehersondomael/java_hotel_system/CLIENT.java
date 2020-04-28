@@ -91,7 +91,7 @@ public class CLIENT { // the client class
     
     public void fillClientTable(JTable table)
     {
-        PreparedStatement ps;
+         PreparedStatement ps;
         ResultSet rs;
         String selectQuery = "SELECT * FROM `clients` ORDER BY `id` DESC";
 
@@ -116,7 +116,6 @@ public class CLIENT { // the client class
             }
         } catch (SQLException ex) {
             Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+        } 
+    }    
 }

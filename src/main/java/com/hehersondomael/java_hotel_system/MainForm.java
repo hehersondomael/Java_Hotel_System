@@ -21,20 +21,24 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int x = JOptionPane.showConfirmDialog(null, "Log Out?",
-                        "Close", JOptionPane.YES_NO_OPTION);
-                if (x==JOptionPane.YES_OPTION)
-                    e.getWindow().dispose();
+                if (JOptionPane.showConfirmDialog(null, "Log Out?","Close", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+                {
+                    dispose();
+                    LoginForm loginForm = new LoginForm();
+                    loginForm.setVisible(true);
+                    loginForm.pack();
+                    loginForm.setLocationRelativeTo(null);
+                }
                 else
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
-        });
+        }
+        );
     }
 
     /**
@@ -123,7 +127,6 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRoomsActionPerformed
-        // go to RoomsReservationsForm
         ManageRoomsForm roomsForm = new ManageRoomsForm();
         roomsForm.setVisible(true);
         roomsForm.pack();
@@ -133,7 +136,6 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemRoomsActionPerformed
 
     private void jMenuItemReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReservationsActionPerformed
-        // go to ManageReservationsForm
         ManageReservationsForm reservationsForm = new ManageReservationsForm();
         reservationsForm.setVisible(true);
         reservationsForm.pack();
@@ -143,7 +145,6 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemReservationsActionPerformed
 
     private void jMenuItemClientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientsActionPerformed
-        // go to ManageClientsForm
         ManageClientsForm clientsForm = new ManageClientsForm();
         clientsForm.setVisible(true);
         clientsForm.pack();

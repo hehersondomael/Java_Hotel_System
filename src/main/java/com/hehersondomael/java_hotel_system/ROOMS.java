@@ -19,57 +19,54 @@ import javax.swing.table.DefaultTableModel;
  * @author Heherson Domael
  */
 public class ROOMS {
-
     MY_CONNECTION my_connection = new MY_CONNECTION();
 
-    // create a function to display all rooms type in jTable
-        public void fillRooms_TYPE_Table(JTable table)
-        {
+    public void fillRooms_TYPE_Table(JTable table)
+    {
         PreparedStatement ps;
         ResultSet rs;
         String selectQuery = "SELECT * FROM `type`";
 
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
-
             rs = ps.executeQuery();
 
             DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 
             Object[] row;
-            
+
             while(rs.next())
             {
                 row = new Object[3];
                 row[0] = rs.getInt(1);
                 row[1] = rs.getString(2);
                 row[2] = rs.getString(3);
-                
+
                 tableModel.addRow(row);
             }
-            
+
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }
-        
+
 // create a function to display all rooms in jTable
 
     /**
      *
      * @param table
      */
-        public void fillRoomsJTable(JTable table)
-        { 
+    public void fillRoomsJTable(JTable table)
+    { 
         PreparedStatement ps;
         ResultSet rs;
         String selectQuery = "SELECT * FROM `rooms` ORDER BY `dateAndTimeAdded` DESC";
 
         try {
             ps = my_connection.createConnection().prepareStatement(selectQuery);
-            
+
             rs = ps.executeQuery();
-            
+
             DefaultTableModel tableModel = (DefaultTableModel)table.getModel();
 
             Object[] row;
@@ -83,11 +80,11 @@ public class ROOMS {
                 row[3] = rs.getString(4);
 
                 tableModel.addRow(row);
-            }            
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }        
+    }
     
     // create a function to fill a combobox with the rooms-type id
     public void fillRooms_TYPE_JCombobox(JComboBox comboBox)
@@ -107,13 +104,13 @@ public class ROOMS {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
+          }
     }
     
     // create a function to add a new room
-        public boolean addRoom(int number, int type, String phone)
-        {
+    public boolean addRoom(int number, int type, String phone)
+    {
         PreparedStatement st;
         String addQuery = "INSERT INTO `rooms` (`r_number`, `type`, `phone`, `reserved`, `dateAndTimeAdded`) VALUES (?,?,?,?,NOW())";
         try {
@@ -129,7 +126,7 @@ public class ROOMS {
            return (st.executeUpdate() > 0);
            
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -151,14 +148,14 @@ public class ROOMS {
            return (st.executeUpdate() > 0);
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }        
     
-public boolean removeRoom(int roomNumber)
+    public boolean removeRoom(int roomNumber)
     {
-                PreparedStatement st;
+        PreparedStatement st;
         String deleteQuery = "DELETE FROM `rooms` WHERE `r_number`=?";
         
         try {
@@ -169,7 +166,7 @@ public boolean removeRoom(int roomNumber)
            return (st.executeUpdate() > 0);
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         
@@ -190,13 +187,13 @@ public boolean removeRoom(int roomNumber)
            return (st.executeUpdate() > 0);
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
     
     // create a function to check if a room is already reserved
-        public String isRoomReserved(int number)
+    public String isRoomReserved(int number)
     {
         PreparedStatement st;
         ResultSet rs;
@@ -215,7 +212,7 @@ public boolean removeRoom(int roomNumber)
                return "";
 
         } catch (SQLException ex) {
-            Logger.getLogger(CLIENT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ROOMS.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
     }   

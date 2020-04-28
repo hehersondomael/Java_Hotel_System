@@ -32,7 +32,7 @@ public class MY_CONNECTION {
             connection = mds.getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(MY_CONNECTION.class.getName()).log(Level.SEVERE, null, ex);
-        }
+          }
 
         return connection;
     }
